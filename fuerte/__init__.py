@@ -11,13 +11,18 @@ Flask based.
 from flask import Flask
 from flask import jsonify
 from flask_restful import Api
+from flask_redis import FlaskRedis
 from werkzeug.contrib.fixers import ProxyFix
+
 
 # Flask Service App
 app = Flask(__name__)
 app.config.from_object("fuerte.settings.DefaultConfig")
 app.config.from_object("fuerte.settings.LogConfig")
 app.config.from_object("fuerte.settings.RedisConfig")
+
+# Redis Service
+redis_store = FlaskRedis(app)
 
 # API Service config
 from fuerte.api.v1 import controller as v1

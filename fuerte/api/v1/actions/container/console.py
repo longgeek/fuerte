@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 # Author: Longgeek <longgeek@fuvism.com>
 
-import redis
 import hashlib
 import inspect
 import requests
 import processes
 import simplejson as json
 
+from fuerte import redis_store
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
 from fuerte.api.v1.config import BASE_CMD
@@ -82,12 +82,11 @@ def console_save(username, cid, cmd=None, port=None):
     if s != 200:
         return (s, m, "")
     cip = r["NetworkSettings"]["Networks"]["fuvism-nginx"]["IPAddress"]
-    rconn = redis.Redis(host="127.0.0.1", port=6379, db=0)
 
     if cmd and port:
         console_url = console_md5(username, cid, cmd)
         console_addr = "http://%s:%s" % (cip, port)
-        rconn.set(console_url, console_addr)
+        redis_store.set(console_url, console_addr)
         return (0, "", console_url)
     else:
         # 第一次创建容器后，默认在 redis 中保存 ssh、8000 地址
@@ -102,5 +101,5 @@ def console_save(username, cid, cmd=None, port=None):
             console_addr = "http://%s:%s" % (cip, CONSOLE_PORT_BEG)
             if c == "8000":
                 console_addr = "http://%s:%s" % (cip, "8000")
-            rconn.set(console_url, console_addr)
+            redis_store.set(console_url, console_addr)
         return (0, "", r)

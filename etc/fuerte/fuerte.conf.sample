@@ -57,3 +57,8 @@ redis_port = 6379
 # the Redis databased number
 # (integer value)
 redis_dbid = 0
+
+# the Redis databased password
+# (string value)
+redis_pass = 
+

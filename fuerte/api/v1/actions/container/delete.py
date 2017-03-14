@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # Author: Longgeek <longgeek@fuvism.com>
 
-import redis
 import requests
+from fuerte import redis_store
 from fuerte.api.v1.config import URL, CONSOLE_DOMAIN
 
 
@@ -16,7 +16,6 @@ def delete(username, cid):
         return (s, r.text, "")
 
     # 删除该用户相关的所有域名解析
-    rconn = redis.Redis(host="127.0.0.1", port=6379, db=0)
-    urls = rconn.keys("*.%s.%s" % (username, CONSOLE_DOMAIN))
-    rconn.delete(*urls)
+    urls = redis_store.keys("*.%s.%s" % (username, CONSOLE_DOMAIN))
+    redis_store.delete(*urls)
     return (s, "", "")

@@ -6,8 +6,6 @@
 import ConfigParser
 import simplejson as json
 
-from redis import Redis
-
 
 cfg = ConfigParser.ConfigParser()
 err = "\nError: In configuration file /etc/fuerte/fuerte.conf "
@@ -58,5 +56,10 @@ class RedisConfig(object):
         REDIS_HOST = cfg.get(_option, "redis_host")
         REDIS_PORT = cfg.get(_option, "redis_port")
         REDIS_DBID = cfg.get(_option, "redis_dbid")
+        REDIS_PASS = cfg.get(_option, "redis_pass")
+        REDIS_URL = "redis://:%s@%s:%s/%s" % (REDIS_PASS,
+                                              REDIS_HOST,
+                                              REDIS_PORT,
+                                              REDIS_DBID)
     except Exception, e:
         exit(err + str(e) + "\n")
