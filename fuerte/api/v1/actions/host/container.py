@@ -11,7 +11,15 @@ import datetime
 def create_container_extend(inspect, user_path, cid):
     """ 创建容器时，在容器所在 docker 主机上执行额外的操作 """
 
+    # 使用共享存储的话，这一段代码不需要再这里执行
+    # 如果用户的容器目录不存在，则创建
+    if not os.path.exists("%s/containers/%s" % (user_path, cid)):
+        os.makedirs("%s/containers/%s" % (user_path, cid))
+        os.makedirs("%s/containers/%s/diff" % (user_path, cid))
+        os.makedirs("%s/containers/%s/work" % (user_path, cid))
+
     try:
+
         # 找到容器的 overlay2 存储目录
         work = inspect["GraphDriver"]["Data"]["WorkDir"]
         upper = inspect["GraphDriver"]["Data"]["UpperDir"]

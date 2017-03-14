@@ -9,7 +9,6 @@ import network
 import requests
 import simplejson as json
 
-from fuerte import app
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
 from fuerte.api.v1.config import NODE_IP
@@ -41,7 +40,8 @@ def create(username, image, cid=None):
         "AttachStdin": True,
         "HostConfig": {
             "Memory": 102400000,  # 100M
-            "MemorySwap": -1,
+            "MemorySwap": 512000000,  # 512M
+            "MemoryReservation": 80000000,  # 80M
             "NetworkMode": NETWORK_BASES_NAME,
             "Binds": [
                 "/storage/.system:/storage/.system:ro",
@@ -94,7 +94,9 @@ def create(username, image, cid=None):
             headers=HEADERS,
             data=json.dumps(params)
         )
-        app.logger.debug(e_req)
+        e_status = e_req.status_code
+        if e_status != 200:
+            return (e_status, e_req.text, "")
 
     # 启动容器
     r = requests.post(
