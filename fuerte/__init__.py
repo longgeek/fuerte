@@ -11,7 +11,6 @@ Flask based.
 from flask import Flask
 from flask import jsonify
 from flask_restful import Api
-from fuerte.api.v1 import controller as v1
 from werkzeug.contrib.fixers import ProxyFix
 
 # Flask Service App
@@ -21,6 +20,7 @@ app.config.from_object("fuerte.settings.LogConfig")
 app.config.from_object("fuerte.settings.RedisConfig")
 
 # API Service config
+from fuerte.api.v1 import controller as v1
 api_route = Api(app)
 api_route.add_resource(v1.APIView, "/api/v1")
 

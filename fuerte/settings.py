@@ -22,8 +22,7 @@ class DefaultConfig(object):
     _option = "default"
 
     try:
-        HTTP_HOST = cfg.get(_option, "http_host")
-        HTTP_PORT = cfg.get(_option, "http_port")
+        URL = cfg.get(_option, "url")
 
         CONSOLE_DOMAIN = cfg.get(_option, "console_domain")
         CONSOLE_PORT_BEG = cfg.get(_option, "console_port_beg")

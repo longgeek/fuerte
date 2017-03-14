@@ -3,8 +3,7 @@
 #
 # Docker swarm manage address
 #
-http_host = 192.168.80.117
-http_port = 4000
+url = http://192.168.80.117:4000
 
 #
 # Learning console parameters

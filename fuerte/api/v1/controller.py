@@ -8,7 +8,7 @@ from flask_restful import Resource
 from flask_restful import reqparse
 from .config import load_workflow, API_ACTIONS
 
-parser = reqparse.RequestParser(bundle_Errors=True)
+parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument("action", type=str, location="json", required=True)
 parser.add_argument("params", type=dict, location="json", required=True)
 
