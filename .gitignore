@@ -1,0 +1,15 @@
+*.DS_Store
+*.egg*
+*.log
+*.pyc
+*.swo
+*.swp
+.coverage
+.tox/
+coverage.xml
+pylint.txt
+reports/
+.environment_version
+db.sqlite3
+local_settings.py
+build
