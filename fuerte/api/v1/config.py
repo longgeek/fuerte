@@ -23,8 +23,11 @@ BASE_CMD = "/storage/.system/.console/bin/butterfly.server.py \
 # API Actions
 API_ACTIONS = {
     "Container": {
-        "Create": {     # 查看学习环境的状态，包括了启动状态和结束状态
+        "Create": {
             "action": ("container", "create", "create"),
+        },
+        "Delete": {
+            "action": ("container", "delete", "delete"),
         },
     }
 }
