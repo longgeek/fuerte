@@ -2,21 +2,27 @@
 # -*- coding: utf-8 -*-
 # Author: Longgeek <longgeek@fuvism.com>
 
+
 """Fuerte Porject
 
 Flask based.
 """
+
 from flask import Flask
 from flask import jsonify
 from flask_restful import Api
-# from looker.api.v1 import controller as v1_controller
+from fuerte.api.v1 import controller as v1
+from werkzeug.contrib.fixers import ProxyFix
 
 # Flask Service App
 app = Flask(__name__)
+app.config.from_object("fuerte.settings.DefaultConfig")
+app.config.from_object("fuerte.settings.LogConfig")
+app.config.from_object("fuerte.settings.RedisConfig")
 
 # API Service config
-apiroute = Api(app)
-# apiroute.add_resource(v1_controller.APIView, '/api/v1')
+api_route = Api(app)
+api_route.add_resource(v1.APIView, "/api/v1")
 
 
 @app.errorhandler(404)
@@ -31,4 +37,4 @@ def http_500(error):
                    message="Runtime error(HTTP 500)!"), 500
 
 
-# app.wsgi_app = ProxyFix(app.wsgi_app)
+app.wsgi_app = ProxyFix(app.wsgi_app)

@@ -1,3 +1,7 @@
 ConfigParser
 pbr>=0.6,!=0.7,<1.0
 simplejson
+
+# Flask
+Flask==0.12
+Flask-RESTful==0.3.5
