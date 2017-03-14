@@ -58,7 +58,7 @@ def console(username, cid, cmd=None):
     s = r.status_code
     if s != 200:
         return (s, r.text, "")
-    s1, m1, r1 = console.console_save(username, cid, cmd, port)
+    s1, m1, r1 = console_save(username, cid, cmd, port)
     if s1 != 0:
         return (s1, m1, "")
     return (s1, "", r1)
@@ -78,7 +78,7 @@ def console_save(username, cid, cmd=None, port=None):
     """ 保存用户的 Console 地址到 Redis 中。"""
 
     # 获取容器所在 nginx 网络的 IP 地址
-    s, m, r = inspect(cid)
+    s, m, r = inspect.inspect(cid)
     if s != 200:
         return (s, m, "")
     cip = r["NetworkSettings"]["Networks"]["fuvism-nginx"]["IPAddress"]
@@ -86,7 +86,7 @@ def console_save(username, cid, cmd=None, port=None):
 
     if cmd and port:
         console_url = console_md5(username, cid, cmd)
-        console_addr = "http://%s:%d" % (cip, port)
+        console_addr = "http://%s:%s" % (cip, port)
         rconn.set(console_url, console_addr)
         return (0, "", console_url)
     else:
@@ -99,8 +99,8 @@ def console_save(username, cid, cmd=None, port=None):
                 CONSOLE_DOMAIN,
             )
             r.append(console_url)
-            console_addr = "http://%s:%d" % (cip, CONSOLE_PORT_BEG)
+            console_addr = "http://%s:%s" % (cip, CONSOLE_PORT_BEG)
             if c == "8000":
-                console_addr = "http://%s:%d" % (cip, 8000)
+                console_addr = "http://%s:%s" % (cip, "8000")
             rconn.set(console_url, console_addr)
         return (0, "", r)

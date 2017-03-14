@@ -130,6 +130,7 @@ def create(username, image, cid=None):
 
     # 打入 ssh web 进程，开启 8000 域名访问
     s_exec, m_exec, r_exec = console.console(username, req.json()["Id"])
-    if s_exec != 200:
+    if s_exec != 0:
         return (s_exec, m_exec, r_exec)
-    return (s, "", req.json()["Id"])
+    else:
+        return (s, "", req.json()["Id"])

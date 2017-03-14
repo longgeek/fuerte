@@ -6,7 +6,7 @@
 from fuerte import app
 from flask_restful import Resource
 from flask_restful import reqparse
-from .config import load_workflow, API_ACTIONS
+from .config import load_api, API_ACTIONS
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument("action", type=str, location="json", required=True)
@@ -40,8 +40,8 @@ class APIView(Resource):
             return {"Error": "API action in exception!" +
                     " [Error]" + str(e)}, 500
 
-        # Load workflow
-        s, m, workflow = load_workflow(api_key, api_action)
+        # Load api
+        s, m, load_action = load_api(api_key, api_action)
         if s != 0:
             if s == -1:
                 return {"Error": "Load API in failure!" +
@@ -49,18 +49,14 @@ class APIView(Resource):
             else:
                 return {"Warning": m, "inner_code": s}, 500
 
-        # Exec workflow
+        # Exec action
         try:
-            s, m, r = workflow(**params)
+            s, m, r = load_action(**params)
         except TypeError as e:
             return {"Error": "The parameters invalid! <%s>" % e.message}, 500
 
-        if s == 0:
+        if s == 0 or s == 200 or s == 204:
             api_return = {"Message": m, "data": r}, 200
-        elif s == -1:
-            api_return = {"Error": "API Server Error!" +
-                          " [Error] %s" % m}, 500
         else:
-            api_return = {"inner_code": s,
-                          "Warning": m}, 200
+            api_return = {"Error": m}, 500
         return api_return

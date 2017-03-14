@@ -16,7 +16,7 @@ HEADERS = {"content-type": "application/json"}
 BASE_CMD = "/storage/.system/.console/bin/butterfly.server.py \
      --unsecure \
      --host=0.0.0.0 \
-     --port=%d \
+     --port=%s \
      --login=%s \
      --cmd=%s"
 
@@ -30,11 +30,11 @@ API_ACTIONS = {
 }
 
 
-def load_workflow(api_key, api_action):
-    """ 加载 API 的 Wrokflow """
+def load_api(api_key, api_action):
+    """ 加载 API 的 Action """
 
     package, moduler, func = API_ACTIONS[api_key][api_action]["action"]
-    workflow = getattr(
+    load_action = getattr(
         __import__(
             "fuerte.api.v1.actions.%s.%s" % (package, moduler),
             fromlist=[func]
@@ -42,4 +42,4 @@ def load_workflow(api_key, api_action):
         func
     )
 
-    return (0, "Success!", workflow)
+    return (0, "Success!", load_action)
