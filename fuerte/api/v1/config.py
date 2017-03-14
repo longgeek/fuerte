@@ -29,6 +29,12 @@ API_ACTIONS = {
         "Delete": {
             "action": ("container", "delete", "delete"),
         },
+        "Console": {
+            "action": ("container", "console", "console"),
+        },
+        "Exec": {
+            "action": ("container", "exec", "c_exec"),
+        },
     }
 }
 
