@@ -5,6 +5,7 @@
 from fuerte import app
 
 
+NODE_IP = app.config["NODE_IP"]
 CONSOLE_DOMAIN = app.config["CONSOLE_DOMAIN"]
 CONSOLE_PORT_BEG = app.config["CONSOLE_PORT_BEG"]
 CONSOLE_PORT_END = app.config["CONSOLE_PORT_END"]
@@ -45,6 +46,9 @@ API_ACTIONS = {
         },
         "WriteFiles": {
             "action": ("host", "host", "write_files"),
+        },
+        "CreateContainerExtend": {
+            "action": ("host", "container", "create_container_extend"),
         },
     }
 

@@ -3,6 +3,9 @@
 # Author: Longgeek <longgeek@fuvism.com>
 
 
+import fcntl
+import struct
+import socket
 import ConfigParser
 import simplejson as json
 
@@ -21,6 +24,17 @@ class DefaultConfig(object):
 
     try:
         URL = cfg.get(_option, "url")
+
+        # Get current node ip address
+        fuerte_interface = cfg.get(_option, "fuerte_interface")
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        NODE_IP = socket.inet_ntoa(
+            fcntl.ioctl(
+                s.fileno(),
+                0x8915,
+                struct.pack('256s', fuerte_interface[:15])
+            )[20:24]
+        )
 
         CONSOLE_DOMAIN = cfg.get(_option, "console_domain")
         CONSOLE_PORT_BEG = cfg.get(_option, "console_port_beg")

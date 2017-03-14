@@ -6,6 +6,11 @@
 url = http://192.168.80.117:4000
 
 #
+# Fuerte listen interface
+#
+fuerte_interface = eth0
+
+#
 # Learning console parameters
 #
 console_domain = c.fuvism.com
@@ -61,4 +66,3 @@ redis_dbid = 0
 # the Redis databased password
 # (string value)
 redis_pass = 
-

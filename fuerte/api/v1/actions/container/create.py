@@ -3,18 +3,19 @@
 # Author: Longgeek <longgeek@fuvism.com>
 
 import os
-import time
-import shutil
 import inspect
 import console
 import network
-import datetime
 import requests
 import simplejson as json
 
+from fuerte import app
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
+from fuerte.api.v1.config import NODE_IP
+from fuerte.api.v1.config import NETWORK_BASES_NAME
 from fuerte.api.v1.config import NETWORK_NGINX_NAME
+from fuerte.api.v1.actions.host.container import create_container_extend
 
 
 def create(username, image, cid=None):
@@ -41,7 +42,7 @@ def create(username, image, cid=None):
         "HostConfig": {
             "Memory": 102400000,  # 100M
             "MemorySwap": -1,
-            "NetworkMode": "fuvism-base",
+            "NetworkMode": NETWORK_BASES_NAME,
             "Binds": [
                 "/storage/.system:/storage/.system:ro",
                 "%s/me:/storage/me:rw" % user_path,
@@ -66,14 +67,6 @@ def create(username, image, cid=None):
     if s_inspect != 200:
         return (s_inspect, m_inspect, r_inspect)
 
-    # 找到容器的 overlay2 存储目录
-    work = r_inspect["GraphDriver"]["Data"]["WorkDir"]
-    upper = r_inspect["GraphDriver"]["Data"]["UpperDir"]
-
-    # 删除原生的 overlay2 存储的 work 和 upper 目录
-    shutil.rmtree(work)
-    shutil.rmtree(upper)
-
     # 如果用户的容器目录不存在，则创建
     if not cid:
         os.makedirs("%s/containers/%s" % (user_path, req.json()["Id"]))
@@ -81,34 +74,27 @@ def create(username, image, cid=None):
         os.makedirs("%s/containers/%s/work" % (user_path, req.json()["Id"]))
         cid = req.json()["Id"]
 
-    # 对共享存储中得目录软连接到 overlay2 存储目录中
-    os.symlink("%s/containers/%s/work" % (user_path, cid), work)
-    os.symlink("%s/containers/%s/diff" % (user_path, cid), upper)
-
-    # 限制容器存储空间
-    if not os.path.exists("/etc/projects"):
-        os.mknod("/etc/projects")
-    if not os.path.exists("/etc/projid"):
-        os.mknod("/etc/projid")
-
-    fo = open("/etc/projects", "r+")
-    po = open("/etc/projid", "r+")
-
-    t_unix = int(time.mktime(datetime.datetime.now().timetuple()))
-    p_limit = "\n%s:%d" % (cid, t_unix)
-    d_limit = "\n%s:%s/containers/%s" % (t_unix, user_path, cid)
-
-    if "%s/containers/%s" % (user_path, cid) not in fo.read():
-        fo.writelines(d_limit)
-    if cid not in po.read():
-        po.writelines(p_limit)
-
-    fo.close()
-    po.close()
-
-    os.system("xfs_quota -x -c 'project -s %s' /storage" % cid)
-    os.system("xfs_quota -x -c 'limit -p bhard=10m %s' /storage" % cid)
-    os.system("xfs_quota -x -c 'report /storage'")
+    # 判断容器是否在当前主机上
+    node = r_inspect["Node"]['IP']
+    if node == NODE_IP:
+        s, m, r = create_container_extend(r_inspect, user_path, cid)
+        if s != 0:
+            return (s, m, "")
+    else:
+        params = {
+            "action": "Host:CreateContainerExtend",
+            "params": {
+                "cid": cid,
+                "inspect": r_inspect,
+                "user_path": user_path
+            }
+        }
+        e_req = requests.post(
+            url="http://%s:8000/api/v1" % node,
+            headers=HEADERS,
+            data=json.dumps(params)
+        )
+        app.logger.debug(e_req)
 
     # 启动容器
     r = requests.post(

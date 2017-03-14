@@ -32,6 +32,7 @@ If you'd like to run from the master branch, you can clone the git repo:
 
 5. INSTALL FUERTE:
 
+    mkdir /opt/git
 	cd /opt/git
 	git clone git@git.pyindex.com:reviewdev/fuerte.git
 	cd fuerte/
@@ -55,6 +56,7 @@ If you'd like to run from the master branch, you can clone the git repo:
 
     vim /etc/fuerte/fuerte.conf
     # redis_pass 设置 redis 访问密码
+    # bind 0.0.0.0 设置 redis 监听地址
 
     vim /etc/redis/redis.conf
     330 行 requirepass 设置 redis 访问密码
@@ -66,7 +68,6 @@ If you'd like to run from the master branch, you can clone the git repo:
 	supervisorctl reread
 	supervisorctl update
 	supervisorctl start fuerte
-	supervisorctl start asyncgo:*
 
 9. LOG DETAIL:
 
