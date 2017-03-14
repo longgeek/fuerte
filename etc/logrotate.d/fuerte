@@ -1,0 +1,20 @@
+/var/log/fuerte/output.log {
+    daily
+    rotate 30
+    missingok
+    compress
+    minsize 100k
+    dateext
+    copytruncate
+    notifempty
+}
+/var/log/fuerte/errors.log {
+    daily
+    rotate 30
+    missingok
+    compress
+    minsize 100k
+    dateext
+    copytruncate
+    notifempty
+}
