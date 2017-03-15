@@ -14,7 +14,8 @@ from fuerte.api.v1.config import HEADERS
 from fuerte.api.v1.config import NODE_IP
 from fuerte.api.v1.config import NETWORK_BASES_NAME
 from fuerte.api.v1.config import NETWORK_NGINX_NAME
-from fuerte.api.v1.actions.host.container import create_container_extend
+from fuerte.api.v1.actions.host.container import create_container_extend_net
+from fuerte.api.v1.actions.host.container import create_container_extend_disk
 
 
 def create(username, image, cid=None):
@@ -74,29 +75,8 @@ def create(username, image, cid=None):
         os.makedirs("%s/containers/%s/work" % (user_path, req.json()["Id"]))
         cid = req.json()["Id"]
 
-    # 判断容器是否在当前主机上
-    node = r_inspect["Node"]['IP']
-    if node == NODE_IP:
-        s, m, r = create_container_extend(r_inspect, user_path, cid)
-        if s != 0:
-            return (s, m, "")
-    else:
-        params = {
-            "action": "Host:CreateContainerExtend",
-            "params": {
-                "cid": cid,
-                "inspect": r_inspect,
-                "user_path": user_path
-            }
-        }
-        e_req = requests.post(
-            url="http://%s:8000/api/v1" % node,
-            headers=HEADERS,
-            data=json.dumps(params)
-        )
-        e_status = e_req.status_code
-        if e_status != 200:
-            return (e_status, e_req.text, "")
+    # 在容器未启动之前，限制磁盘空间
+    _limit_disk_quota(r_inspect, user_path, cid)
 
     # 启动容器
     r = requests.post(
@@ -116,9 +96,73 @@ def create(username, image, cid=None):
     if s_net != 200:
         return (s_net, m_net, "")
 
+    # 在容器启动后，限制容器下载速率
+    _limit_network_bandwidth(user_path, cid)
+
     # 打入 ssh web 进程，开启 8000 域名访问
     s_exec, m_exec, r_exec = console.console(username, req.json()["Id"])
     if s_exec != 0:
         return (s_exec, m_exec, r_exec)
     else:
         return (s, "", req.json()["Id"])
+
+
+def _limit_disk_quota(r_inspect, user_path, cid):
+    """ 限制 Docker 容器磁盘使用空间 """
+
+    # 判断容器是否在当前主机上
+    node = r_inspect["Node"]['IP']
+    if node == NODE_IP:
+        s, m, r = create_container_extend_disk(r_inspect, user_path, cid)
+        if s != 0:
+            return (s, m, "")
+    else:
+        params = {
+            "action": "Host:CreateContainerExtendDisk",
+            "params": {
+                "cid": cid,
+                "inspect": r_inspect,
+                "user_path": user_path
+            }
+        }
+        e_req = requests.post(
+            url="http://%s:8000/api/v1" % node,
+            headers=HEADERS,
+            data=json.dumps(params)
+        )
+        e_status = e_req.status_code
+        if e_status != 200:
+            return (e_status, e_req.text, "")
+
+
+def _limit_network_bandwidth(user_path, cid):
+    """ 限制 Docker 网络的下载速率 """
+
+    # 获取容器启动后的详细信息
+    s_inspect, m_inspect, r_inspect = inspect.inspect(cid)
+    if s_inspect != 200:
+        return (s_inspect, m_inspect, r_inspect)
+
+    # 判断容器是否在当前主机上
+    node = r_inspect["Node"]['IP']
+    if node == NODE_IP:
+        s, m, r = create_container_extend_net(r_inspect, user_path, cid)
+        if s != 0:
+            return (s, m, "")
+    else:
+        params = {
+            "action": "Host:CreateContainerExtendNet",
+            "params": {
+                "cid": cid,
+                "inspect": r_inspect,
+                "user_path": user_path
+            }
+        }
+        e_req = requests.post(
+            url="http://%s:8000/api/v1" % node,
+            headers=HEADERS,
+            data=json.dumps(params)
+        )
+        e_status = e_req.status_code
+        if e_status != 200:
+            return (e_status, e_req.text, "")

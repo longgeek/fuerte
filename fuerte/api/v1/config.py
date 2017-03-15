@@ -47,8 +47,11 @@ API_ACTIONS = {
         "WriteFiles": {
             "action": ("host", "host", "write_files"),
         },
-        "CreateContainerExtend": {
-            "action": ("host", "container", "create_container_extend"),
+        "CreateContainerExtendNet": {
+            "action": ("host", "container", "create_container_extend_net"),
+        },
+        "CreateContainerExtendDisk": {
+            "action": ("host", "container", "create_container_extend_disk"),
         },
     }
 
