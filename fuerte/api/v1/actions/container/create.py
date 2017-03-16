@@ -44,6 +44,16 @@ def create(username, image, cid=None):
             "MemorySwap": 512000000,  # 512M
             "MemoryReservation": 80000000,  # 80M
             "NetworkMode": NETWORK_BASES_NAME,
+            # 限制 CPU 最高使用率为 20%
+            "CpuPeriod": 50000,
+            "CpuQuota": 10000,
+            "Ulimits": [
+                {"Name": "nproc", "Hard": 512, "Soft": 400},
+                {"Name": "nofile", "Hard": 1024, "Soft": 800},
+            ],
+            # 限制容器中最大进程数，可以有效防止 Fork 炸弹
+            # https://blog.docker.com/2016/02/docker-engine-1-10-security/
+            "PidsLimit": 512,
             "Binds": [
                 "/storage/.system:/storage/.system:ro",
                 "%s/me:/storage/me:rw" % user_path,
