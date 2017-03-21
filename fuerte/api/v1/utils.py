@@ -14,7 +14,7 @@ requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 
 
 def pack_requests(method, **kwargs):
-    """ 为 requests 添加证书验证 """
+    """ Add a certificate for requests """
 
     if TLS == "true" or TLS == "True":
         kwargs["verify"] = False
