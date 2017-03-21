@@ -4,11 +4,11 @@
 
 import hashlib
 import inspect
-import requests
 import processes
 import simplejson as json
 
 from fuerte import redis_store
+from fuerte.api.v1.utils import pack_requests
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
 from fuerte.api.v1.config import BASE_CMD
@@ -40,20 +40,26 @@ def console(username, cid, cmd=None):
             BASE_CMD % (CONSOLE_PORT_BEG, "True", "bash")
         ]
     # 创建一个 Exec 实例
-    req = requests.post(
-        url=URL + "/containers/%s/exec" % cid,
-        headers=HEADERS,
-        data=json.dumps(params)
+    req = pack_requests(
+        "POST",
+        {
+            "url": URL + "/containers/%s/exec" % cid,
+            "headers": HEADERS,
+            "data": json.dumps(params)
+        }
     )
     status = req.status_code
     if status != 201:
         return (status, req.text, "")
 
     # 启动 Exec 实例
-    r = requests.post(
-        url=URL + "/exec/%s/start" % req.json()["Id"],
-        headers=HEADERS,
-        data=json.dumps({"Tty": True, "Detach": True})
+    r = pack_requests(
+        "POST",
+        {
+            "url": URL + "/exec/%s/start" % req.json()["Id"],
+            "headers": HEADERS,
+            "data": json.dumps({"Tty": True, "Detach": True})
+        }
     )
     s = r.status_code
     if s != 200:

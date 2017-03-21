@@ -77,3 +77,17 @@ class RedisConfig(object):
                                               REDIS_DBID)
     except Exception, e:
         exit(err + str(e) + "\n")
+
+
+class SwarmConfig(object):
+    """Swarm Config"""
+
+    _option = "swarm"
+
+    try:
+        TLS = cfg.get(_option, "tls")
+        TLS_CERT = cfg.get(_option, "tlscert")
+        TLS_KEY = cfg.get(_option, "tlskey")
+        TLS_CERTS = (TLS_CERT, TLS_KEY)
+    except Exception, e:
+        exit(err + str(e) + "\n")

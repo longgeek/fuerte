@@ -20,6 +20,7 @@ app = Flask(__name__)
 app.config.from_object("fuerte.settings.DefaultConfig")
 app.config.from_object("fuerte.settings.LogConfig")
 app.config.from_object("fuerte.settings.RedisConfig")
+app.config.from_object("fuerte.settings.SwarmConfig")
 
 # Redis Service
 redis_store = FlaskRedis(app)

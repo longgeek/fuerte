@@ -9,6 +9,7 @@ import network
 import requests
 import simplejson as json
 
+from fuerte.api.v1.utils import pack_requests
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
 from fuerte.api.v1.config import NODE_IP
@@ -62,13 +63,12 @@ def create(username, image, cid=None):
         },
     }
 
-    # 创建容器
-    req = requests.post(
-        url=URL + "/containers/create",
-        headers=HEADERS,
-        data=json.dumps(params)
-    )
-
+    kwargs = {
+        "url": URL + "/containers/create",
+        "headers": HEADERS,
+        "data": json.dumps(params)
+    }
+    req = pack_requests("post", **kwargs)
     status = req.status_code
     if status != 201:
         return (status, req.text, "")
@@ -89,11 +89,11 @@ def create(username, image, cid=None):
     _limit_disk_quota(r_inspect, user_path, cid)
 
     # 启动容器
-    r = requests.post(
-        url=URL + "/containers/%s/start" % req.json()["Id"],
-        headers=HEADERS
-    )
-
+    kwargs = {
+        "url": URL + "/containers/%s/start" % req.json()["Id"],
+        "headers": HEADERS
+    }
+    r = pack_requests("post", **kwargs)
     s = r.status_code
     if s != 204:
         return (s, r.text, "")

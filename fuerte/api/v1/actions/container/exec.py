@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 # Author: Longgeek <longgeek@fuvism.com>
 
-import requests
 import simplejson as json
 
-from fuerte.api.v1.config import URL, HEADERS
+from fuerte.api.v1.utils import pack_requests
+from fuerte.api.v1.config import URL
+from fuerte.api.v1.config import HEADERS
 
 
 def c_exec(cid, cmds, wait=False):
@@ -29,19 +30,25 @@ def c_exec(cid, cmds, wait=False):
         }
         for c in cmds:
             params["Cmd"] = ["/bin/sh", "-c", c]
-            r = requests.post(
-                url=URL + "/containers/%s/exec" % cid,
-                headers=HEADERS,
-                data=json.dumps(params)
+            r = pack_requests(
+                "POST",
+                {
+                    "url": URL + "/containers/%s/exec" % cid,
+                    "headers": HEADERS,
+                    "data": json.dumps(params)
+                }
             )
             s = r.status_code
             if s != 201:
                 return (s, r.text, "")
 
-            r = requests.post(
-                url=URL + "/exec/%s/start" % r.json()["Id"],
-                headers=HEADERS,
-                data=json.dumps({"Tty": False, "Detach": False})
+            r = pack_requests(
+                "POST",
+                {
+                    "url": URL + "/exec/%s/start" % r.json()["Id"],
+                    "headers": HEADERS,
+                    "data": json.dumps({"Tty": False, "Detach": False})
+                }
             )
             s = r.status_code
             results.append(r.text)
@@ -56,19 +63,25 @@ def c_exec(cid, cmds, wait=False):
         }
         for c in cmds:
             params["Cmd"] = ["/bin/sh", "-c", c]
-            r = requests.post(
-                url=URL + "/containers/%s/exec" % cid,
-                headers=HEADERS,
-                data=json.dumps(params)
+            r = pack_requests(
+                "POST",
+                {
+                    "url": URL + "/containers/%s/exec" % cid,
+                    "headers": HEADERS,
+                    "data": json.dumps(params)
+                }
             )
             s = r.status_code
             if s != 201:
                 return (s, r.text, "")
 
-            r = requests.post(
-                url=URL + "/exec/%s/start" % r.json()["Id"],
-                headers=HEADERS,
-                data=json.dumps({"Tty": True, "Detach": True})
+            r = pack_requests(
+                "POST",
+                {
+                    "url": URL + "/exec/%s/start" % r.json()["Id"],
+                    "headers": HEADERS,
+                    "data": json.dumps({"Tty": True, "Detach": True})
+                }
             )
             s = r.status_code
             if s != 200:

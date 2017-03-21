@@ -2,7 +2,7 @@
 # https://github.com/frntn/docker-tls-helper
 set -ex
 
-SRV_SAN="DNS:node01,IP:192.168.80.117,IP:192.168.80.16,IP:192.168.80.91" 
+SRV_SAN="DNS:node01,DNS:localhost,IP:192.168.80.117,IP:192.168.80.16,IP:192.168.80.91,IP:127.0.0.1" 
 SRV_SUBJ="/CN=*"  # manage01
 CLT_SUBJ="/CN=*"
 

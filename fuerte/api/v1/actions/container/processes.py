@@ -4,8 +4,8 @@
 
 import re
 import console
-import requests
 
+from fuerte.api.v1.utils import pack_requests
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
 
@@ -18,9 +18,12 @@ def processes(username, cid, cmd=None):
     status = 1 不存在则返回一个可用端口。
     """
 
-    r = requests.get(
-        url=URL + "/containers/%s/top" % cid,
-        headers=HEADERS,
+    r = pack_requests(
+        "GET",
+        {
+            "url": URL + "/containers/%s/top" % cid,
+            "headers": HEADERS,
+        }
     )
     s = r.status_code
     if s != 200:

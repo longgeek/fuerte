@@ -11,6 +11,8 @@ CONSOLE_PORT_BEG = app.config["CONSOLE_PORT_BEG"]
 CONSOLE_PORT_END = app.config["CONSOLE_PORT_END"]
 NETWORK_BASES_NAME = app.config["NETWORK_BASES_NAME"]
 NETWORK_NGINX_NAME = app.config["NETWORK_NGINX_NAME"]
+TLS = app.config["TLS"]
+TLS_CERTS = app.config["TLS_CERTS"]
 
 URL = app.config["URL"]
 HEADERS = {"content-type": "application/json"}
