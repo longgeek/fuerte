@@ -29,6 +29,10 @@ DOCKER_OPTS="
     --tlscert=/etc/docker/certs.d/daemon/daemon.pem \
     --tlskey=/etc/docker/certs.d/daemon/daemon-key.pem \
     --registry-mirror=https://192.168.80.117:5000 \
-    --insecure-registry 192.168.80.117:5000
+    --insecure-registry 192.168.80.117:5000 \
+    --cluster-advertise 192.168.80.117:2375 \
+    --cluster-store=consul://192.168.80.117:8501 \
+    --cluster-store-opt kv.cacertfile=/etc/docker/certs.d/ca/ca.pem \
+    --cluster-store-opt kv.certfile=/etc/docker/certs.d/client/client.pem \
+    --cluster-store-opt kv.keyfile=/etc/docker/certs.d/client/client-key.pem
 "
-# DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay2 --insecure-registry 192.168.80.117:5000 --cluster-advertise 192.168.80.117:4000 --cluster-store consul://192.168.80.117:8500"
