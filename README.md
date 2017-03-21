@@ -43,7 +43,7 @@ If you'd like to run from the master branch, you can clone the git repo:
 6. CREATE LOG DIR:
 
 	mkdir /var/log/fuerte
-    cp /opt/git/fuerte/etc/logrotate.d/fuerte /etc/logrotate.d/
+    cp /opt/git/fuerte/install/etc/logrotate.d/fuerte /etc/logrotate.d/
     chown :adm /var/log/fuerte
     logrotate -f /etc/logrotate.d/fuerte
     service rsyslog restart
@@ -51,8 +51,8 @@ If you'd like to run from the master branch, you can clone the git repo:
 7. CONFIG FUERTE:
 
     mkdir /etc/fuerte
-	cp /opt/git/fuerte/etc/fuerte/fuerte.conf.sample /etc/fuerte/fuerte.conf
-	cp /opt/git/fuerte/etc/supervisor/conf.d/fuerte.conf.sample /etc/supervisor/conf.d/fuerte.conf
+	cp /opt/git/fuerte/install/etc/fuerte/fuerte.conf.sample /etc/fuerte/fuerte.conf
+	cp /opt/git/fuerte/install/etc/supervisor/conf.d/fuerte.conf.sample /etc/supervisor/conf.d/fuerte.conf
 
     vim /etc/fuerte/fuerte.conf
     # redis_pass 设置 redis 访问密码
