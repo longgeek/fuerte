@@ -40,27 +40,23 @@ def console(username, cid, cmd=None):
             BASE_CMD % (CONSOLE_PORT_BEG, "True", "bash")
         ]
     # 创建一个 Exec 实例
-    req = pack_requests(
-        "POST",
-        {
-            "url": URL + "/containers/%s/exec" % cid,
-            "headers": HEADERS,
-            "data": json.dumps(params)
-        }
-    )
+    kwargs = {
+        "url": URL + "/containers/%s/exec" % cid,
+        "headers": HEADERS,
+        "data": json.dumps(params)
+    }
+    req = pack_requests("POST", **kwargs)
     status = req.status_code
     if status != 201:
         return (status, req.text, "")
 
     # 启动 Exec 实例
-    r = pack_requests(
-        "POST",
-        {
-            "url": URL + "/exec/%s/start" % req.json()["Id"],
-            "headers": HEADERS,
-            "data": json.dumps({"Tty": True, "Detach": True})
-        }
-    )
+    kwargs = {
+        "url": URL + "/exec/%s/start" % req.json()["Id"],
+        "headers": HEADERS,
+        "data": json.dumps({"Tty": True, "Detach": True})
+    }
+    r = pack_requests("POST", **kwargs)
     s = r.status_code
     if s != 200:
         return (s, r.text, "")

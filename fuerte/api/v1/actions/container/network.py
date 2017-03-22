@@ -13,14 +13,12 @@ def connect(cid, network_name):
     """ 将容器连接到一个网络 """
 
     params = {"Container": cid}
-    r = pack_requests(
-        "POST",
-        {
-            "url": URL + "/networks/%s/connect" % network_name,
-            "headers": HEADERS,
-            "data": json.dumps(params)
-        }
-    )
+    kwargs = {
+        "url": URL + "/networks/%s/connect" % network_name,
+        "headers": HEADERS,
+        "data": json.dumps(params)
+    }
+    r = pack_requests("POST", **kwargs)
     s = r.status_code
     if s != 200:
         return (s, r.text, "")

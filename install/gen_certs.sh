@@ -36,7 +36,7 @@ create_daemon() {
         -out daemon.csr -subj "${SRV_SUBJ}"
     
     # .crt
-    EXTFILE="extendedKeyUsage = serverAuth"
+    EXTFILE="extendedKeyUsage = clientAuth,serverAuth"
     [ ! -z "${SRV_SAN:-""}" ] && EXTFILE="${EXTFILE}\nsubjectAltName = ${SRV_SAN}"
     openssl x509 -req \
         -days 3650 -sha256 \
@@ -58,7 +58,7 @@ create_swarm() {
         -out swarm.csr -subj "${SRV_SUBJ}"
     
     # .crt
-    EXTFILE="extendedKeyUsage = serverAuth"
+    EXTFILE="extendedKeyUsage = clientAuth,serverAuth"
     [ ! -z "${SRV_SAN:-""}" ] && EXTFILE="${EXTFILE}\nsubjectAltName = ${SRV_SAN}"
     openssl x509 -req \
         -days 3650 -sha256 \
@@ -80,7 +80,7 @@ create_consul() {
         -out consul.csr -subj "${SRV_SUBJ}"
     
     # .crt
-    EXTFILE="extendedKeyUsage = serverAuth"
+    EXTFILE="extendedKeyUsage = clientAuth,serverAuth"
     [ ! -z "${SRV_SAN:-""}" ] && EXTFILE="${EXTFILE}\nsubjectAltName = ${SRV_SAN}"
     openssl x509 -req \
         -days 3650 -sha256 \
@@ -102,7 +102,7 @@ create_registry() {
         -out registry.csr -subj "${SRV_SUBJ}"
     
     # .crt
-    EXTFILE="extendedKeyUsage = serverAuth"
+    EXTFILE="extendedKeyUsage = clientAuth,serverAuth"
     [ ! -z "${SRV_SAN:-""}" ] && EXTFILE="${EXTFILE}\nsubjectAltName = ${SRV_SAN}"
     openssl x509 -req \
         -days 3650 -sha256 \
@@ -124,7 +124,7 @@ create_client() {
         -out client.csr -subj "$CLT_SUBJ"
     
     # .crt
-    EXTFILE="extendedKeyUsage = clientAuth"
+    EXTFILE="extendedKeyUsage = clientAuth,serverAuth"
     openssl x509 -req \
         -days 3650 -sha256 \
         -in client.csr -passin file:ca.pass \
@@ -153,8 +153,8 @@ fix_perms() {
 # MAIN
 #
 main() {
-    [ -e $(CERTS_PATH) ] && rm -fr $(CERTS_PATH)
-    [ -e $(CERTS_PATH) ] || mkdir -p "${CERTS_PATH}"
+    [ -e "${CERTS_PATH}" ] && rm -fr "${CERTS_PATH}"
+    [ -e "${CERTS_PATH}" ] || mkdir -p "${CERTS_PATH}"
     cd "${CERTS_PATH}"
     
     create_ca

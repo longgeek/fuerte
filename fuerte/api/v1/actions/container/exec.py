@@ -30,14 +30,12 @@ def c_exec(cid, cmds, wait=False):
         }
         for c in cmds:
             params["Cmd"] = ["/bin/sh", "-c", c]
-            r = pack_requests(
-                "POST",
-                {
-                    "url": URL + "/containers/%s/exec" % cid,
-                    "headers": HEADERS,
-                    "data": json.dumps(params)
-                }
-            )
+            kwargs = {
+                "url": URL + "/containers/%s/exec" % cid,
+                "headers": HEADERS,
+                "data": json.dumps(params)
+            }
+            r = pack_requests("POST", **kwargs)
             s = r.status_code
             if s != 201:
                 return (s, r.text, "")
@@ -63,14 +61,12 @@ def c_exec(cid, cmds, wait=False):
         }
         for c in cmds:
             params["Cmd"] = ["/bin/sh", "-c", c]
-            r = pack_requests(
-                "POST",
-                {
-                    "url": URL + "/containers/%s/exec" % cid,
-                    "headers": HEADERS,
-                    "data": json.dumps(params)
-                }
-            )
+            kwargs = {
+                "url": URL + "/containers/%s/exec" % cid,
+                "headers": HEADERS,
+                "data": json.dumps(params)
+            }
+            r = pack_requests("POST", **kwargs)
             s = r.status_code
             if s != 201:
                 return (s, r.text, "")

@@ -11,8 +11,8 @@ from fuerte.api.v1.config import CONSOLE_DOMAIN
 def delete(username, cid):
     """ 删除容器，同时删除 Redis 中的 URL 地址 """
 
-    r = pack_requests("DELETE",
-                      {"url": URL + "/containers/%s?force=true" % cid})
+    kwargs = {"url": URL + "/containers/%s?force=true" % cid}
+    r = pack_requests("DELETE", **kwargs)
     s = r.status_code
     if s != 204:
         return (s, r.text, "")

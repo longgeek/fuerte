@@ -10,13 +10,11 @@ from fuerte.api.v1.config import HEADERS
 def inspect(cid):
     """ 获取容器详细信息 """
 
-    r = pack_requests(
-        "GET",
-        {
-            "url": URL + "/containers/%s/json" % cid,
-            "headers": HEADERS
-        }
-    )
+    kwargs = {
+        "url": URL + "/containers/%s/json" % cid,
+        "headers": HEADERS
+    }
+    r = pack_requests("GET", **kwargs)
     s = r.status_code
     if s != 200:
         return (s, r.text, "")

@@ -18,13 +18,11 @@ def processes(username, cid, cmd=None):
     status = 1 不存在则返回一个可用端口。
     """
 
-    r = pack_requests(
-        "GET",
-        {
-            "url": URL + "/containers/%s/top" % cid,
-            "headers": HEADERS,
-        }
-    )
+    kwargs = {
+        "url": URL + "/containers/%s/top" % cid,
+        "headers": HEADERS,
+    }
+    r = pack_requests("GET", **kwargs)
     s = r.status_code
     if s != 200:
         return (s, r.text, "")

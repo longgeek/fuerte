@@ -68,7 +68,7 @@ def create(username, image, cid=None):
         "headers": HEADERS,
         "data": json.dumps(params)
     }
-    req = pack_requests("post", **kwargs)
+    req = pack_requests("POST", **kwargs)
     status = req.status_code
     if status != 201:
         return (status, req.text, "")
@@ -93,7 +93,7 @@ def create(username, image, cid=None):
         "url": URL + "/containers/%s/start" % req.json()["Id"],
         "headers": HEADERS
     }
-    r = pack_requests("post", **kwargs)
+    r = pack_requests("POST", **kwargs)
     s = r.status_code
     if s != 204:
         return (s, r.text, "")
