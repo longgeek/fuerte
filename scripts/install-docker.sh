@@ -10,4 +10,4 @@ apt-key adv \
 apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual
 # apt-get install -y --force-yes docker-engine
 dpkg -i /opt/git/fuerte/install/packages/docker-engine*.deb
-apt-get -f install
+apt-get -f -y --force-yes install
