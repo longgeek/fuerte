@@ -8,4 +8,6 @@ apt-key adv \
         --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 
 apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual
-apt-get install -y --force-yes docker-engine
+# apt-get install -y --force-yes docker-engine
+dpkg -i /opt/git/fuerte/install/packages/docker-engine*.deb
+apt-get -f install
