@@ -1,5 +1,7 @@
 #!/bin/bash
 
+IP=$(ifconfig eth0 | grep 'inet addr:' | awk '{print $2}' | awk -F: '{print $2}')
+
 # consul 没有使用 TLS 证书的情况下
 # docker run -itd \
 # -p 4000:4000 \
@@ -30,7 +32,7 @@ docker run -itd \
 swarm manage \
 -H :4000 \
 --replication \
---advertise eth0:4000 \
+--advertise $IP:4000 \
 --strategy binpack \
 --tlsverify \
 --tlscacert=/certs.d/ca/ca.pem \

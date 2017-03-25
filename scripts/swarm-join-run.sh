@@ -1,5 +1,6 @@
 #!/bin/bash
 
+IP=$(ifconfig eth0 | grep 'inet addr:' | awk '{print $2}' | awk -F: '{print $2}')
 # consul 没有使用 TLS 证书的情况下
 # docker run -itd \
 # --name swarm-node \
@@ -16,7 +17,7 @@ docker run -itd \
 -v /storage/services/ca:/certs.d/ca:ro \
 -v /storage/services/client:/certs.d/client:ro \
 swarm join \
---advertise eth0:2375 \
+--advertise $IP:2375 \
 --discovery-opt kv.cacertfile=/certs.d/ca/ca.pem \
 --discovery-opt kv.certfile=/certs.d/client/client.pem \
 --discovery-opt kv.keyfile=/certs.d/client/client-key.pem \
