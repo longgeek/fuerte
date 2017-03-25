@@ -1,7 +1,7 @@
 #!/bin/bash
 #http://www.aboutyun.com/thread-10662-1-1.html
 
-apt-get install -y ceph ceph-deploy ceph-fs-common ceph-fuse
+apt-get install -y ceph ceph-deploy ceph-fs-common ceph-fuse ceph-mds
 cd /etc/ceph
 ceph-deploy new dc-manager01 dc-manager02 dc-manager03
 ceph-deploy install dc-manager01 dc-manager02 dc-manager03
@@ -13,9 +13,11 @@ echo "/dev/vg-ceph-storage/lv-ceph-storage  /ceph/osd xfs  rw,relatime,attr2,ino
 ceph-deploy osd prepare dc-manager01:/ceph/osd dc-manager02:/ceph/osd dc-manager03:/ceph/osd
 ceph-deploy osd activate dc-manager01:/ceph/osd dc-manager02:/ceph/osd dc-manager03:/ceph/osd
 ceph-deploy admin dc-manager01
+echo "mon clock drift allowed = 1" >> ceph.conf
+ceph-deploy --overwrite-conf config push dc-manager01 dc-manager02 dc-manager03
 
 ceph -s
 ceph osd trea
 restart ceph-all
-#mount.ceph dc-manager01,dc-manager02,dc-manager03:/ /mnt -o name=admin,secret=AQC50tNYCCWlBRAAdy1epXR6OX3vzkIf4uVxPg==
+#mount.ceph dc-manager01,dc-manager02,dc-manager03:/ /storage -o name=admin,secret=AQC50tNYCCWlBRAAdy1epXR6OX3vzkIf4uVxPg==
 #echo "dc-manager01,dc-manager02,dc-manager03:/        /storage ceph name=admin,secret=AQCxodRYAKBDIRAAv+QTchsG1jM1I0EzP4r2yA== 0      0" >> /etc/fstab
