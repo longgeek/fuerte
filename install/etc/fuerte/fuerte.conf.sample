@@ -3,7 +3,7 @@
 #
 # Docker swarm manage address
 #
-url = https://192.168.80.117:4000
+url = https://192.168.0.2:4000
 
 #
 # Fuerte listen interface
@@ -80,8 +80,8 @@ tls = true
 
 # Connection swarm manage certificate
 # (string value)
-tlscert = /etc/docker/certs.d/client/client.pem
+tlscert = /storage/services/client/client.pem
 
 # Connection swarm manage key
 # (string value)
-tlskey = /etc/docker/certs.d/client/client-key.pem
+tlskey = /storage/services/client/client-key.pem

@@ -2,12 +2,12 @@
 # https://github.com/frntn/docker-tls-helper
 set -ex
 
-SRV_SAN="DNS:node01,DNS:localhost,IP:192.168.80.117,IP:192.168.80.16,IP:192.168.80.91,IP:127.0.0.1" 
+SRV_SAN="DNS:dc-manager01,DNS:dc-manager02,DNS:dc-manager03,DNS:localhost,IP:192.168.0.2,IP:192.168.0.3,IP:192.168.0.4,IP:127.0.0.1" 
 SRV_SUBJ="/CN=*"  # manage01
 CLT_SUBJ="/CN=*"
 
 CA_SUBJ="${CA_SUBJ:-"/C=${CA_C:-"FR"}/L=${CA_L:-"Paris"}/O=${CA_O:-"Ekino"}/OU=${CA_OU:-"DevOps"}/CN=${CA_CN:-"Docker TLS"}"}"
-CERTS_PATH="${CERTS_PATH:-"etc/docker/certs.d"}"
+CERTS_PATH="${CERTS_PATH:-"storage/services"}"
 
 #
 # CA
@@ -153,8 +153,6 @@ fix_perms() {
 # MAIN
 #
 main() {
-    [ -e "${CERTS_PATH}" ] && rm -fr "${CERTS_PATH}"
-    [ -e "${CERTS_PATH}" ] || mkdir -p "${CERTS_PATH}"
     cd "${CERTS_PATH}"
     
     create_ca

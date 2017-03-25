@@ -1,10 +1,11 @@
 {
+    "encrypt": "cg8StVXbQJ0gPvMd9o7yrg==",
     "data_dir": "/data",
     "ui_dir": "/ui",
     "client_addr": "0.0.0.0",
     "log_level": "INFO",
-    "node_name": "consul",
     "server": true,
+    "bootstrap": true,
     "addresses": {
         "https": "0.0.0.0"
     },
@@ -15,7 +16,7 @@
     "disable_update_check": true,
     "verify_incoming": true,
     "verify_outgoing": true,
-    "key_file": "/config/certs.d/consul-priv-key.pem",
-    "cert_file": "/config/certs.d/consul-cert.pem",
-    "ca_file": "/config/certs.d/ca.pem"
+    "key_file": "/config/consul-key.pem",
+    "cert_file": "/config/consul.pem",
+    "ca_file": "/config/ca.pem"
 }

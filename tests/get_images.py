@@ -11,10 +11,10 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 
 r = requests.get(
-    url="https://192.168.80.117:2375/images/json",
+    url="https://192.168.0.2:2375/images/json",
     verify=False,
-    cert=("/etc/docker/certs.d/client/client.pem",
-          "/etc/docker/certs.d/client/client-key.pem")
+    cert=("/storage/services/client/client.pem",
+          "/storage/services/client/client-key.pem")
 )
 
 print r.json()

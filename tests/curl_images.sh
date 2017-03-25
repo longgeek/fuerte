@@ -1,6 +1,6 @@
 #!/bin/bash
 
 curl -v -s -k \
-    --key /etc/docker/certs.d/client/client-key.pem \
-    --cert /etc/docker/certs.d/client/client.pem \
-    https://192.168.80.117:2375/images/json
+    --key /storage/services/client/client-key.pem \
+    --cert /storage/services/client/client.pem \
+    https://192.168.0.2:2375/images/json
