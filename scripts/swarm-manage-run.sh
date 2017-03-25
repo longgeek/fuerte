@@ -30,7 +30,7 @@ docker run -itd \
 swarm manage \
 -H :4000 \
 --replication \
---advertise 192.168.0.2:4000 \
+--advertise eth0:4000 \
 --strategy binpack \
 --tlsverify \
 --tlscacert=/certs.d/ca/ca.pem \

@@ -43,7 +43,7 @@ DOCKER_OPTS="
 #     --tlskey=/storage/services/daemon/daemon-key.pem \
 #     --registry-mirror=https://192.168.0.2:5000 \
 #     --insecure-registry 192.168.0.2:5000 \
-#     --cluster-advertise 192.168.0.2:2375 \
+#     --cluster-advertise eth0:2375 \
 #     --cluster-store consul://192.168.0.2:8501 \
 #     --cluster-store-opt kv.cacertfile=/storage/services/ca/ca.pem \
 #     --cluster-store-opt kv.certfile=/storage/services/client/client.pem \

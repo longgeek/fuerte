@@ -16,7 +16,7 @@ docker run -itd \
 -v /storage/services/ca:/certs.d/ca:ro \
 -v /storage/services/client:/certs.d/client:ro \
 swarm join \
---advertise 192.168.0.2:2375 \
+--advertise eth0:2375 \
 --discovery-opt kv.cacertfile=/certs.d/ca/ca.pem \
 --discovery-opt kv.certfile=/certs.d/client/client.pem \
 --discovery-opt kv.keyfile=/certs.d/client/client-key.pem \
