@@ -24,15 +24,19 @@ If you'd like to run from the master branch, you can clone the git repo:
 
     apt-get install python-dev redis-server
 
-4. INSTALL FUERTE:
+4. CREATE VENV DIR:
 
+    cd /opt/
+    virtualenv venv
+    source /opt/venv/bin/activate
+
+5. INSTALL FUERTE:
+
+    mkdir /opt/git
     cd /opt/git
     git clone git@git.pyindex.com:reviewdev/fuerte.git
-
-5. CREATE VENV DIR:
-
-    mkdir /storage
-    cp -r /opt/git/fuerte/install/storage/venv /storage/
+    cd fuerte/
+    pip install -r requirements.txt
 
 6. CREATE LOG DIR:
 
