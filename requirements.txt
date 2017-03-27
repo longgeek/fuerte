@@ -7,3 +7,7 @@ simplejson
 Flask==0.12
 Flask-RESTful==0.3.5
 flask-redis==0.3.0
+
+# Supervisor
+gevent
+gunicorn

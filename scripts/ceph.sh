@@ -1,7 +1,7 @@
 #!/bin/bash
 #http://www.aboutyun.com/thread-10662-1-1.html
 
-apt-get install -y ceph ceph-deploy ceph-fs-common ceph-fuse ceph-mds
+apt-get install -y --force-yes ceph ceph-deploy ceph-fs-common ceph-fuse ceph-mds
 cd /etc/ceph
 ceph-deploy new dc-manager01 dc-manager02 dc-manager03
 ceph-deploy install dc-manager01 dc-manager02 dc-manager03
@@ -13,6 +13,14 @@ echo "/dev/vg-ceph-storage/lv-ceph-storage  /ceph/osd xfs  rw,relatime,attr2,ino
 ceph-deploy osd prepare dc-manager01:/ceph/osd dc-manager02:/ceph/osd dc-manager03:/ceph/osd
 ceph-deploy osd activate dc-manager01:/ceph/osd dc-manager02:/ceph/osd dc-manager03:/ceph/osd
 ceph-deploy admin dc-manager01
+
+###############################################
+# 版本大于 0.8 需要手工创建 metadata
+ceph osd pool create cephfs_data 0
+ceph osd pool create cephfs_metadata 0
+ceph fs new cephfs cephfs_metadata cephfs_data
+###############################################
+
 echo "mon clock drift allowed = 1" >> ceph.conf
 ceph-deploy --overwrite-conf config push dc-manager01 dc-manager02 dc-manager03
 

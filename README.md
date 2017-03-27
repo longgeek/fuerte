@@ -24,21 +24,15 @@ If you'd like to run from the master branch, you can clone the git repo:
 
     apt-get install python-dev redis-server
 
-4. CREATE VENV DIR:
+4. INSTALL FUERTE:
 
-    cd /opt/
-    virtualenv venv
-    source /opt/venv/bin/activate
-
-5. INSTALL FUERTE:
-
-    mkdir /opt/git
     cd /opt/git
     git clone git@git.pyindex.com:reviewdev/fuerte.git
-    cd fuerte/
-    pip install -r requirements.txt
-    pip install gunicorn gevent
 
+5. CREATE VENV DIR:
+
+    mkdir /storage
+    cp -r /opt/git/fuerte/install/storage/venv /storage/
 
 6. CREATE LOG DIR:
 
@@ -55,11 +49,11 @@ If you'd like to run from the master branch, you can clone the git repo:
     cp /opt/git/fuerte/install/etc/supervisor/conf.d/fuerte.conf.sample /etc/supervisor/conf.d/fuerte.conf
 
     vim /etc/fuerte/fuerte.conf
-    # redis_pass 设置 redis 访问密码
-    # bind 0.0.0.0 设置 redis 监听地址
+    # redis_pass YCTACMmimohBBiZRanibCnjJV8zdnwGs 设置 redis 访问密码
 
     vim /etc/redis/redis.conf
-    330 行 requirepass 设置 redis 访问密码
+    55 行  bind 0.0.0.0 设置 redis 监听地址
+    330 行 requirepass YCTACMmimohBBiZRanibCnjJV8zdnwGs 设置 redis 访问密码
     service redis-server restart
 
 8. START SUPERVISOR SERVICE:

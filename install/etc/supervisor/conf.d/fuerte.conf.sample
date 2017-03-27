@@ -1,5 +1,5 @@
 [program:fuerte]
-command=/opt/venv/bin/gunicorn -w10 -kgevent --worker-connections 1000 -b0.0.0.0:8000 fuerte:app
+command=/storage/venv/fuerte/bin/gunicorn -w10 -kgevent --worker-connections 1000 -b0.0.0.0:8000 fuerte:app
 directory=/opt/git/fuerte                                                                           ; 项目目录
 startsecs=0                                                                                         ; 启动时间
 stopwaitsecs=0                                                                                      ; 终止等待时间
