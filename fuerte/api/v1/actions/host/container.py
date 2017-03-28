@@ -3,20 +3,24 @@
 # Author: Longgeek <longgeek@fuvism.com>
 
 import os
-import time
 import shutil
-import datetime
 import subprocess
 
+from fuerte.api.v1.utils import ceph_rbd_create
 
-def create_container_extend_disk(inspect, user_path, cid):
+
+def create_container_extend_disk(inspect, username, user_path, cid):
     """ 创建容器时，在容器所在 docker 主机上执行额外的操作 """
 
-    # 使用共享存储的话，这一段代码不需要再这里执行
+    # 创建用户的基本目录
+    if not os.path.exists(user_path):
+        os.makedirs("%s/me" % user_path)
+        os.makedirs("%s/learn" % user_path)
+        os.makedirs("%s/containers" % user_path)
+
     # 如果用户的容器目录不存在，则创建
     if not os.path.exists("%s/containers/%s" % (user_path, cid)):
         os.makedirs("%s/containers/%s" % (user_path, cid))
-        os.makedirs("%s/containers/%s/diff" % (user_path, cid))
         os.makedirs("%s/containers/%s/work" % (user_path, cid))
 
     try:
@@ -28,32 +32,40 @@ def create_container_extend_disk(inspect, user_path, cid):
         shutil.rmtree(work)
         shutil.rmtree(upper)
 
+        ceph_rbd_create(username, user_path, cid)
+        if not os.path.exists("%s/containers/%s/diff" % (user_path, cid)):
+            os.makedirs("%s/containers/%s/diff" % (user_path, cid))
+        if not os.path.exists("%s/containers/%s/work" % (user_path, cid)):
+            os.makedirs("%s/containers/%s/work" % (user_path, cid))
+
+        # 禁止用户学习数据目录进行删除操作
+        os.system("chattr +a -R %s/learn" % user_path)
+
         # 对共享存储中得目录软连接到 overlay2 存储目录中
         os.symlink("%s/containers/%s/work" % (user_path, cid), work)
         os.symlink("%s/containers/%s/diff" % (user_path, cid), upper)
 
-        # 限制容器存储空间
-        if not os.path.exists("/etc/projects"):
-            os.mknod("/etc/projects")
-        if not os.path.exists("/etc/projid"):
-            os.mknod("/etc/projid")
-
-        fo = open("/etc/projects", "r+")
-        po = open("/etc/projid", "r+")
-
-        t_unix = int(time.mktime(datetime.datetime.now().timetuple()))
-        p_limit = "\n%s:%d" % (cid, t_unix)
-        d_limit = "\n%s:%s/containers/%s" % (t_unix, user_path, cid)
-
-        if "%s/containers/%s" % (user_path, cid) not in fo.read():
-            fo.writelines(d_limit)
-        if cid not in po.read():
-            po.writelines(p_limit)
-        fo.close()
-        po.close()
-
-        os.system("xfs_quota -x -c 'project -s %s' /storage" % cid)
-        os.system("xfs_quota -x -c 'limit -p bhard=5120m %s' /storage" % cid)
+        # #
+        # # 使用 xfs quota 来限制容器存储空间
+        # # 本方案已放弃，使用 ceph rbd 来指定块大小直接限制
+        # #
+        # if not os.path.exists("/etc/projects"):
+        #     os.mknod("/etc/projects")
+        # if not os.path.exists("/etc/projid"):
+        #     os.mknod("/etc/projid")
+        # fo = open("/etc/projects", "r+")
+        # po = open("/etc/projid", "r+")
+        # t_unix = int(time.mktime(datetime.datetime.now().timetuple()))
+        # p_limit = "\n%s:%d" % (cid, t_unix)
+        # d_limit = "\n%s:%s/containers/%s" % (t_unix, user_path, cid)
+        # if "%s/containers/%s" % (user_path, cid) not in fo.read():
+        #     fo.writelines(d_limit)
+        # if cid not in po.read():
+        #     po.writelines(p_limit)
+        # fo.close()
+        # po.close()
+        # os.system("xfs_quota -x -c 'project -s %s' /storage" % cid)
+        # os.system("xfs_quota -x -c 'limit -p bhard=5120m %s' /storage" % cid)
         # os.system("xfs_quota -x -c 'report /storage'")
     except Exception, e:
         return (-1, str(e), "")

@@ -3,18 +3,27 @@
 # Author: Longgeek <longgeek@fuvism.com>
 
 
+import os
 import fcntl
 import struct
 import socket
 import ConfigParser
-import simplejson as json
 
 
 cfg = ConfigParser.ConfigParser()
 err = "\nError: In configuration file /etc/fuerte/fuerte.conf "
 
 if not cfg.read("/etc/fuerte/fuerte.conf"):
-    exit("\nError: Can not find config file in /etc/fuerte/fuerte.conf\n")
+    exit("\nError: Can not find config file in \
+          /etc/fuerte/fuerte.conf\n")
+
+if not os.path.isfile("/etc/ceph/ceph.conf"):
+    exit("\nError: Can not find config file in \
+          /etc/ceph/ceph.conf\n")
+
+if not os.path.isfile("/etc/ceph/ceph.client.admin.keyring"):
+    exit("\nError: Can not find config file in \
+          /etc/ceph/ceph.client.admin.keyring\n")
 
 
 class DefaultConfig(object):

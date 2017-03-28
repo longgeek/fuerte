@@ -1,4 +1,4 @@
-requests
+requests==2.13.0
 ConfigParser
 pbr>=0.6,!=0.7,<1.0
 simplejson
@@ -11,3 +11,6 @@ flask-redis==0.3.0
 # Supervisor
 gevent
 gunicorn
+
+# Tox
+flake8

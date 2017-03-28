@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # Author: Longgeek <longgeek@fuvism.com>
 
-import os
 import inspect
 import console
 import network
@@ -24,14 +23,14 @@ def create(username, image, cid=None):
 
     user_path = "/storage/user_data/%s" % username
 
-    # 在存储中创建用户学习存储目录
-    if not os.path.exists(user_path):
-        os.makedirs("%s/me" % user_path)
-        os.makedirs("%s/learn" % user_path)
-        os.makedirs("%s/containers" % user_path)
-
-    # 禁止用户学习数据目录进行删除操作
-    os.system("chattr +a -R %s/learn" % user_path)
+    # # 需要挂载 ceph rbd，用来保存用户的学习数据
+    # # 在存储中创建用户学习存储目录
+    # if not os.path.exists(user_path):
+    #     os.makedirs("%s/me" % user_path)
+    #     os.makedirs("%s/learn" % user_path)
+    #     os.makedirs("%s/containers" % user_path)
+    # # 禁止用户学习数据目录进行删除操作
+    # os.system("chattr +a -R %s/learn" % user_path)
 
     # 创建容器参数
     params = {
@@ -78,15 +77,8 @@ def create(username, image, cid=None):
     if s_inspect != 200:
         return (s_inspect, m_inspect, r_inspect)
 
-    # 如果用户的容器目录不存在，则创建
-    if not cid:
-        os.makedirs("%s/containers/%s" % (user_path, req.json()["Id"]))
-        os.makedirs("%s/containers/%s/diff" % (user_path, req.json()["Id"]))
-        os.makedirs("%s/containers/%s/work" % (user_path, req.json()["Id"]))
-        cid = req.json()["Id"]
-
     # 在容器未启动之前，限制磁盘空间
-    _limit_disk_quota(r_inspect, user_path, cid)
+    _limit_disk_quota(r_inspect, username, user_path, req.json()["Id"])
 
     # 启动容器
     kwargs = {
@@ -117,13 +109,14 @@ def create(username, image, cid=None):
         return (s, "", req.json()["Id"])
 
 
-def _limit_disk_quota(r_inspect, user_path, cid):
+def _limit_disk_quota(r_inspect, username, user_path, cid):
     """ 限制 Docker 容器磁盘使用空间 """
 
     # 判断容器是否在当前主机上
     node = r_inspect["Node"]['IP']
     if node == NODE_IP:
-        s, m, r = create_container_extend_disk(r_inspect, user_path, cid)
+        s, m, r = create_container_extend_disk(r_inspect,
+                                               username, user_path, cid)
         if s != 0:
             return (s, m, "")
     else:
@@ -132,7 +125,8 @@ def _limit_disk_quota(r_inspect, user_path, cid):
             "params": {
                 "cid": cid,
                 "inspect": r_inspect,
-                "user_path": user_path
+                "user_path": user_path,
+                "username": username,
             }
         }
         e_req = requests.post(
