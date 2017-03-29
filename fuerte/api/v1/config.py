@@ -69,6 +69,9 @@ API_ACTIONS = {
         "WriteFilesExtend": {
             "action": ("host", "write", "write_files_extend"),
         },
+        "ContainerDeleteExtend": {
+            "action": ("container", "delete", "delete_extend"),
+        },
         "CreateContainerExtendNet": {
             "action": ("host", "container", "create_container_extend_net"),
         },

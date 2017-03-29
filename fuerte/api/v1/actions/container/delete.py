@@ -4,17 +4,48 @@
 
 import os
 import shutil
+import requests
+import simplejson as json
 
 from fuerte import redis_store
 from fuerte.api.v1.utils import pack_requests
 from fuerte.api.v1.config import URL
+from fuerte.api.v1.config import NODE_IP
+from fuerte.api.v1.config import HEADERS
 from fuerte.api.v1.config import CONSOLE_DOMAIN
+from fuerte.api.v1.actions.container import inspect
 
 
 def delete(username, cid, reset=False):
     """ 删除容器
-    同时删除 Redis 中的 URL 地址、卸载用户容器存储、unmap rbd image
+    同时在容器所在主机上删除 Redis 中的 URL 地址、
+    卸载用户容器存储、unmap rbd image
     """
+
+    # 获取容器的详细信息
+    s_inspect, m_inspect, r_inspect = inspect.inspect(cid)
+    if s_inspect != 200:
+        return (s_inspect, m_inspect, r_inspect)
+
+    # 判断容器是否在当前主机上
+    node = r_inspect["Node"]["IP"]
+
+    if node == NODE_IP:
+        return delete_extend(username, cid, reset)
+    else:
+        params = {"action": "Extend:ContainerDeleteExtend",
+                  "params": {"cid": cid, "reset": reset, "username": username}}
+        r = requests.post(url="http://%s:8000/api/v1" % node,
+                          headers=HEADERS,
+                          data=json.dumps(params))
+        s = r.status_code
+        if s != 200:
+            return (s, r.text, "")
+        return (s, "", r.json())
+
+
+def delete_extend(username, cid, reset):
+    """ 删除代码体 """
 
     try:
         kwargs = {"url": URL + "/containers/%s?force=true" % cid}
