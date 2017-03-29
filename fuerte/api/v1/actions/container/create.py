@@ -121,7 +121,7 @@ def _limit_disk_quota(r_inspect, username, user_path, cid):
             return (s, m, "")
     else:
         params = {
-            "action": "Host:CreateContainerExtendDisk",
+            "action": "Extend:CreateContainerExtendDisk",
             "params": {
                 "cid": cid,
                 "inspect": r_inspect,
@@ -155,7 +155,7 @@ def _limit_network_bandwidth(user_path, cid):
             return (s, m, "")
     else:
         params = {
-            "action": "Host:CreateContainerExtendNet",
+            "action": "Extend:CreateContainerExtendNet",
             "params": {
                 "cid": cid,
                 "inspect": r_inspect,

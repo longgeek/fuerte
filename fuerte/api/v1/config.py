@@ -47,10 +47,18 @@ API_ACTIONS = {
             "action": ("host", "exec", "execute"),
         },
         "ReadFiles": {
-            "action": ("host", "host", "read_files"),
+            "action": ("host", "read", "read_files"),
         },
         "WriteFiles": {
-            "action": ("host", "host", "write_files"),
+            "action": ("host", "write", "write_files"),
+        },
+    },
+    "Extend": {
+        "ReadFilesExtend": {
+            "action": ("host", "read", "read_files_extend"),
+        },
+        "WriteFilesExtend": {
+            "action": ("host", "write", "write_files_extend"),
         },
         "CreateContainerExtendNet": {
             "action": ("host", "container", "create_container_extend_net"),
@@ -59,7 +67,6 @@ API_ACTIONS = {
             "action": ("host", "container", "create_container_extend_disk"),
         },
     }
-
 }
 
 
