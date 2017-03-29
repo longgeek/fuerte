@@ -13,7 +13,15 @@ from fuerte.api.v1.actions.container import inspect
 
 
 def read_files(files, cid=None):
-    """ 在 Docker 主机或容器中读取文件内容 """
+    """在 Docker 主机或容器中读取文件内容
+
+    :param dict files:
+        e.g.: {"/etc/hosts": "",
+               "/tmp/test.txt": "the test.txt default content."}
+    :param str or None cid: The container uuid
+        cid is str: 读取容器里的文件内容
+        cid is None: 读取主机里的文件内容
+    """
 
     if cid:
         # 获取容器的详细信息

@@ -12,7 +12,15 @@ from fuerte.api.v1.actions.container import inspect
 
 
 def write_files(files, cid=None):
-    """ 为 Docker 主机或容器里写入文件内 """
+    """为 Docker 主机或容器里写入文件内
+
+    :param dict files:
+        e.g.: {"/etc/hosts": "",
+               "/tmp/test.txt": "the test.txt default content."}
+    :param str or None cid: The container uuid
+        cid is str: 为容器里的文件写入内容
+        cid is None: 为当前主机的文件写入内容
+    """
 
     if cid:
         # 获取容器的详细信息

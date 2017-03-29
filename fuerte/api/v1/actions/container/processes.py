@@ -13,9 +13,12 @@ from fuerte.api.v1.config import HEADERS
 def processes(username, cid, cmd=None):
     """ 获取容器中所有的进程
 
-    指定 cmd 后，会查询命令相应的进程:
-    status = 0 存在则返回 Url 地址，
-    status = 1 不存在则返回一个可用端口。
+    :param str username: Fuvism user name
+    :param str cid: The container uuid
+    :param str or None cmd: 指定 cmd 后, 会查询命令相应的进程
+    :returns:
+        status = 0 存在则返回 Url 地址,
+        status = 1 不存在则返回一个可用端口.
     """
 
     kwargs = {

@@ -17,7 +17,14 @@ from fuerte.api.v1.config import CONSOLE_PORT_BEG
 
 
 def console(username, cid, cmd=None):
-    """ 在容器中打入 Console 进程 """
+    """在容器中打入 Console 进程
+
+    :param str username: Fuvism user name
+    :param str cid: The container uuid
+    :param str or None cmd:
+        str: Console command(e.g., `ipython`, `python manager.py runserver`)
+        None: Bash console
+    """
 
     params = {
         "AttachStdout": False,
@@ -68,6 +75,7 @@ def console(username, cid, cmd=None):
 
 def console_md5(username, cid, cmd):
     """ 根据用户名、容器ID、命令生成唯一的 md5 url 地址 """
+
     random_str = username + cid + cmd
     hash_str = cid[0:12] + hashlib.md5(random_str).hexdigest()[0:12]
     return "http://%s.%s.%s" % (

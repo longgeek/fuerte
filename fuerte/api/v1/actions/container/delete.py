@@ -17,9 +17,14 @@ from fuerte.api.v1.actions.container import inspect
 
 
 def delete(username, cid, reset=False):
-    """ 删除容器
-    同时在容器所在主机上删除 Redis 中的 URL 地址、
-    卸载用户容器存储、unmap rbd image
+    """删除容器
+
+    在容器所在主机上删除 Redis 中的 URL 地址, 卸载用户容器存储, unmap rbd image
+
+    :param str username: Fuvism user name
+    :param str cid: The container uuid
+    :param bool reset:
+        reset is true, clear container data in ceph rbd
     """
 
     # 获取容器的详细信息

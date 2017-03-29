@@ -19,18 +19,18 @@ from fuerte.api.v1.actions.host.container import create_container_extend_disk
 
 
 def create(username, image, cid=None):
-    """ 创建容器 """
+    """通过 swarm leader 创建容器
+
+    调用 swarm manager api, 来创建容器, 限制容器内存, 磁盘, 网络, CPU 资源,
+    指定基础网络和 Nginx 网络(Console 专用), 利用 overlayfs 文件系统特性,
+    为其挂载 Ceph rbd 块存储, 实现容器中的数据持久化.
+
+    :param str username: Fuvism user name
+    :param str image: image name for container
+    :param str or None cid: The container uuid
+    """
 
     user_path = "/storage/user_data/%s" % username
-
-    # # 需要挂载 ceph rbd，用来保存用户的学习数据
-    # # 在存储中创建用户学习存储目录
-    # if not os.path.exists(user_path):
-    #     os.makedirs("%s/me" % user_path)
-    #     os.makedirs("%s/learn" % user_path)
-    #     os.makedirs("%s/containers" % user_path)
-    # # 禁止用户学习数据目录进行删除操作
-    # os.system("chattr +a -R %s/learn" % user_path)
 
     # 创建容器参数
     params = {

@@ -12,7 +12,15 @@ from fuerte.api.v1.actions.container import inspect
 
 
 def fd_check(cid, fds):
-    """ 在容器所在 Docker 主机上检测文件、目录是否创建 """
+    """在容器所在 Docker 主机上检测文件、目录是否创建
+
+    :param str cid: The container uuid
+    :param list fds: 要检测的数据结构
+        e.g.: [
+            {"type": "dir", "name": "/some/dirname"},
+            {"type": "file", "name": "/some/filename"}
+        ]
+    """
 
     # 获取容器的详细信息
     s_inspect, m_inspect, r_inspect = inspect.inspect(cid)

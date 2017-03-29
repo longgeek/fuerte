@@ -10,11 +10,13 @@ from fuerte.api.v1.config import HEADERS
 
 
 def execute(cid, cmds, wait=False):
-    """ 在容器中执行命令
+    """在容器中执行命令
 
-    cmds is LIST
-    wait = True  命令将在前台执行，会等待命令执行完成
-    wait = False 命令将在后台执行，不等待命令执行完成
+    :param str cid: The container uuid
+    :param list cmds: List of commands to execute
+    :param bool wait:
+        wait is True  命令将在前台执行，会等待命令执行完成
+        wait is False 命令将在后台执行，不等待命令执行完成
     """
 
     if type(cmds) != list:

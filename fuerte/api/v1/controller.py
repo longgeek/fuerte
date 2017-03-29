@@ -25,7 +25,7 @@ class APIView(Resource):
         params = args["params"]
 
         if "Message" not in action:
-            app.logger.debug("Action = " + action)
+            app.logger.info("action = %s\nparams = %s" % (action, params))
 
         # Check Action
         try:

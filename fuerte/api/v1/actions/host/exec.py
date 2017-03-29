@@ -12,7 +12,11 @@ from fuerte.api.v1.actions.container import inspect
 
 
 def execute(cid, cmds):
-    """ 在容器所在 Docker 主机上执行命令 """
+    """在容器所在 Docker 主机上执行命令
+
+    :param str cid: The container uuid
+    :param list cmds: List of commands to execute
+    """
 
     # 获取容器的详细信息
     s_inspect, m_inspect, r_inspect = inspect.inspect(cid)
