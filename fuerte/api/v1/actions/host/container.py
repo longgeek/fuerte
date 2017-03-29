@@ -6,7 +6,7 @@ import os
 import shutil
 import subprocess
 
-from fuerte.api.v1.utils import ceph_rbd_create
+from fuerte.api.v1.actions.host._ceph_rbd_create import ceph_rbd_create
 
 
 def create_container_extend_disk(inspect, username, user_path, cid):
@@ -67,6 +67,8 @@ def create_container_extend_disk(inspect, username, user_path, cid):
         # os.system("xfs_quota -x -c 'project -s %s' /storage" % cid)
         # os.system("xfs_quota -x -c 'limit -p bhard=5120m %s' /storage" % cid)
         # os.system("xfs_quota -x -c 'report /storage'")
+        # #
+        # #
     except Exception, e:
         return (-1, str(e), "")
     return (0, "", "")
