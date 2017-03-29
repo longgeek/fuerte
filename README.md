@@ -50,14 +50,71 @@ If you'd like to run from the master branch, you can clone the git repo:
     330 行 requirepass YCTACMmimohBBiZRanibCnjJV8zdnwGs 设置 redis 访问密码
     service redis-server restart
 
-6. START SUPERVISOR SERVICE:
+6. Sure Docker Host the "/storage/.system/.console/" exist.
+   Use virtualenv build butterfly in the /storage/.system/.console/local/butterfly:
+
+    mkdir -p /storage/.system
+    pip install virtualenv
+    virtualenv /storage/.system/.console
+    source /storage/.system/.console/bin/activate
+    cd /storage/.system/.console/local/
+    git clone git@github.com:thstack/butterfly.git
+    cd butterfly
+    pip install -r requirements.txt
+    python setup.py develop
+    deactivate
+
+7. Django database synchronization needs to enter the project directory,
+   which adds a .bash directory, used to store a number of scripts.
+   such as: switch directory
+
+    mkdir /storage/.system/.bash/
+    touch switchdir.sh
+    #!/bin/bash
+
+    export VIRTUAL_ENV=/storage/.system/.virtualenv/django/django-1.8.4
+    export PATH=/storage/.system/.virtualenv/django/django-1.8.4/bin:$PATH
+    [ -e $1 ] && cd $1
+    bash
+
+
+8. Sure Docker Host the "/storage/.virtualenv/" exist.
+   The Django Practice topic is heavily dependent on it:
+
+    # django-1.8.2
+    mkdir -p /storage/.system/.virtualenv/django
+    virtualenv /storage/.system/.virtualenv/django/django-1.8.2
+    source /storage/.system/.virtualenv/django/django-1.8.2/bin/activate
+    pip install "django==1.8.2"
+    pip install ipdb
+    deactivate
+    sed -i "s/'django.middleware.clickjacking.XFrameOptionsMiddleware'/# 'django.middleware.clickjacking.XFrameOptionsMiddleware'/g" /storage/.system/.virtualenv/django/django-1.8.2/lib/python2.7/site-packages/django/conf/project_template/project_name/settings.py
+
+    # django-1.8.4
+    virtualenv /storage/.system/.virtualenv/django/django-1.8.4
+    source /storage/.system/.virtualenv/django/django-1.8.4/bin/activate
+    pip install "django==1.8.4"
+    pip install ipdb
+    deactivate
+    sed -i "s/'django.middleware.clickjacking.XFrameOptionsMiddleware'/# 'django.middleware.clickjacking.XFrameOptionsMiddleware'/g" /storage/.system/.virtualenv/django/django-1.8.4/lib/python2.7/site-packages/django/conf/project_template/project_name/settings.py
+
+9. Sure tree command the >= 1.7.0.
+   Install:
+
+    wget https://launchpadlibrarian.net/173977087/tree_1.7.0.orig.tar.gz
+    tar zxvf tree_1.7.0.orig.tar.gz
+    cd tree-1.7.0
+    make
+    make install
+
+10. START SUPERVISOR SERVICE:
 
     service supervisor restart
     supervisorctl reread
     supervisorctl update
     supervisorctl start fuerte
 
-7. LOG DETAIL:
+11. LOG DETAIL:
 
     tail -f /var/log/fuerte/output.log
     tail -f /var/log/fuerte/errors.log
