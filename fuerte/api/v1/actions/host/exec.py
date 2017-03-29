@@ -5,7 +5,7 @@
 import subprocess
 
 
-def h_exec(cmds):
+def execute(cmds):
     """在 Docker 主机上执行命令"""
 
     has_error = {}

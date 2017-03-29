@@ -9,7 +9,7 @@ from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
 
 
-def c_exec(cid, cmds, wait=False):
+def execute(cid, cmds, wait=False):
     """ 在容器中执行命令
 
     cmds is LIST
@@ -40,14 +40,12 @@ def c_exec(cid, cmds, wait=False):
             if s != 201:
                 return (s, r.text, "")
 
-            r = pack_requests(
-                "POST",
-                {
-                    "url": URL + "/exec/%s/start" % r.json()["Id"],
-                    "headers": HEADERS,
-                    "data": json.dumps({"Tty": False, "Detach": False})
-                }
-            )
+            kwargs = {
+                "url": URL + "/exec/%s/start" % r.json()["Id"],
+                "headers": HEADERS,
+                "data": json.dumps({"Tty": False, "Detach": False})
+            }
+            r = pack_requests("POST", **kwargs)
             s = r.status_code
             results.append(r.text)
             if s != 200:
@@ -71,14 +69,12 @@ def c_exec(cid, cmds, wait=False):
             if s != 201:
                 return (s, r.text, "")
 
-            r = pack_requests(
-                "POST",
-                {
-                    "url": URL + "/exec/%s/start" % r.json()["Id"],
-                    "headers": HEADERS,
-                    "data": json.dumps({"Tty": True, "Detach": True})
-                }
-            )
+            kwargs = {
+                "url": URL + "/exec/%s/start" % r.json()["Id"],
+                "headers": HEADERS,
+                "data": json.dumps({"Tty": True, "Detach": True})
+            }
+            r = pack_requests("POST", **kwargs)
             s = r.status_code
             if s != 200:
                 return (s, r.text, "")

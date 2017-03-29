@@ -39,12 +39,12 @@ API_ACTIONS = {
             "action": ("container", "console", "console"),
         },
         "Exec": {
-            "action": ("container", "exec", "c_exec"),
+            "action": ("container", "exec", "execute"),
         },
     },
     "Host": {
         "Exec": {
-            "action": ("host", "exec", "h_exec"),
+            "action": ("host", "exec", "execute"),
         },
         "ReadFiles": {
             "action": ("host", "host", "read_files"),
