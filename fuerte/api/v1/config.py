@@ -46,6 +46,9 @@ API_ACTIONS = {
         "Exec": {
             "action": ("host", "exec", "execute"),
         },
+        "FdCheck": {
+            "action": ("host", "check", "fd_check"),
+        },
         "ReadFiles": {
             "action": ("host", "read", "read_files"),
         },
@@ -54,6 +57,12 @@ API_ACTIONS = {
         },
     },
     "Extend": {
+        "HostExecuteExtend": {
+            "action": ("host", "exec", "execute_extend"),
+        },
+        "HostFdCheckExtend": {
+            "action": ("host", "check", "fd_check_extend"),
+        },
         "ReadFilesExtend": {
             "action": ("host", "read", "read_files_extend"),
         },
