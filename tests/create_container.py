@@ -20,7 +20,8 @@ params = {
 }
 r = requests.post(
     url="http://192.168.0.2:8000/api/v1",
-    headers={"content-type": "application/json"},
+    headers={"token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+             "content-type": "application/json"},
     data=json.dumps(params),
 )
 

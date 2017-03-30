@@ -23,6 +23,11 @@ console_port_end = 44000
 network_bases_name = fuvism-bases
 network_nginx_name = fuvism-nginx
 
+#
+# Http token auth
+#
+token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
 
 [log]
 

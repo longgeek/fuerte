@@ -5,6 +5,7 @@
 from fuerte import app
 
 
+TOKEN = app.config["TOKEN"]
 NODE_IP = app.config["NODE_IP"]
 CONSOLE_DOMAIN = app.config["CONSOLE_DOMAIN"]
 CONSOLE_PORT_BEG = app.config["CONSOLE_PORT_BEG"]
@@ -19,6 +20,10 @@ CEPH_CONF = "/etc/ceph/ceph.conf"
 
 URL = app.config["URL"]
 HEADERS = {"content-type": "application/json"}
+TOKEN_HEADERS = {
+    "token": "Bearer %s" % TOKEN,
+    "content-type": "application/json"
+}
 BASE_CMD = "/storage/.system/.console/bin/butterfly.server.py \
      --unsecure \
      --host=0.0.0.0 \

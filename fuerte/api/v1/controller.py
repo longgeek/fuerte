@@ -3,10 +3,13 @@
 # Author: Longgeek <longgeek@fuvism.com>
 
 
+import flask
 from fuerte import app
 from flask_restful import Resource
 from flask_restful import reqparse
-from .config import load_api, API_ACTIONS
+from .config import load_api
+from .config import API_ACTIONS
+from .config import TOKEN
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument("action", type=str, location="json", required=True)
@@ -19,6 +22,11 @@ class APIView(Resource):
 
         Accept method "POST" only,
         """
+
+        # Verify request header token
+        auth = flask.request.headers.get("token")
+        if auth != "Bearer %s" % TOKEN:
+            return {"Error": "Unauthorized request."}, 401
 
         args = parser.parse_args()
         action = args["action"]

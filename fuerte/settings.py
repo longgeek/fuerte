@@ -33,6 +33,7 @@ class DefaultConfig(object):
 
     try:
         URL = cfg.get(_option, "url")
+        TOKEN = cfg.get(_option, "token")
 
         # Get current node ip address
         fuerte_interface = cfg.get(_option, "fuerte_interface")

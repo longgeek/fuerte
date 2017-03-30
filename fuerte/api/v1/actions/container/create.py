@@ -11,6 +11,7 @@ import simplejson as json
 from fuerte.api.v1.utils import pack_requests
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
+from fuerte.api.v1.config import TOKEN_HEADERS
 from fuerte.api.v1.config import NODE_IP
 from fuerte.api.v1.config import NETWORK_BASES_NAME
 from fuerte.api.v1.config import NETWORK_NGINX_NAME
@@ -131,7 +132,7 @@ def _limit_disk_quota(r_inspect, username, user_path, cid):
         }
         e_req = requests.post(
             url="http://%s:8000/api/v1" % node,
-            headers=HEADERS,
+            headers=TOKEN_HEADERS,
             data=json.dumps(params)
         )
         e_status = e_req.status_code
@@ -164,7 +165,7 @@ def _limit_network_bandwidth(user_path, cid):
         }
         e_req = requests.post(
             url="http://%s:8000/api/v1" % node,
-            headers=HEADERS,
+            headers=TOKEN_HEADERS,
             data=json.dumps(params)
         )
         e_status = e_req.status_code

@@ -11,7 +11,7 @@ from fuerte import redis_store
 from fuerte.api.v1.utils import pack_requests
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import NODE_IP
-from fuerte.api.v1.config import HEADERS
+from fuerte.api.v1.config import TOKEN_HEADERS
 from fuerte.api.v1.config import CONSOLE_DOMAIN
 from fuerte.api.v1.actions.container import inspect
 
@@ -41,7 +41,7 @@ def delete(username, cid, reset=False):
         params = {"action": "Extend:ContainerDeleteExtend",
                   "params": {"cid": cid, "reset": reset, "username": username}}
         r = requests.post(url="http://%s:8000/api/v1" % node,
-                          headers=HEADERS,
+                          headers=TOKEN_HEADERS,
                           data=json.dumps(params))
         s = r.status_code
         if s != 200:
