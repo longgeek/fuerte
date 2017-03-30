@@ -62,7 +62,7 @@ If you'd like to run from the master branch, you can clone the git repo:
     git clone git@github.com:thstack/butterfly.git
     cd butterfly
     pip install -r requirements.txt
-    python setup.py develop
+    python setup.py develop(必须是 develop, install 后静态文件会 404)
     deactivate
 
 7. Django database synchronization needs to enter the project directory,

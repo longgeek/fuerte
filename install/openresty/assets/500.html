@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title>Fuvism | 500 Error Page</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="/assets/css/style.min.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+</head>
+<body>
+	<!-- begin #page-container -->
+	<div id="page-container" class="fade">
+	    <!-- begin error -->
+        <div class="error">
+            <div class="error-code m-b-10">500 <i class="fa fa-warning"></i></div>
+            <div class="error-content">
+                <div class="error-message">服务器内部错误...</div>
+                <div class="error-desc m-b-20">
+                    请刷新尝试. <br />
+                    还有问题，请提交工单给我们。
+                </div>
+            </div>
+        </div>
+        <!-- end error -->
+	</div>
+	<!-- end page container -->
+
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="/assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="/assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<!-- ================== END BASE JS ================== -->
+
+	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="/assets/js/apps.min.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+
+	<script>
+		$(document).ready(function() {
+			App.init();
+		});
+	</script>
+</body>
+</html>
