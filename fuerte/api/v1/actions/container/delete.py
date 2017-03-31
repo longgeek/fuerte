@@ -70,18 +70,22 @@ def delete_extend(username, cid, reset):
         fo.close()
 
         # 找到 map 的设备号
-        mount = "/storage/user_data/%s/containers/%s" % (username, cid)
-        for line in all_mounts:
-            if mount in line:
-                map_device = line.split(" ")[0]
-                break
+        mounts = [
+            "/storage/user_data/%s/me" % username,
+            "/storage/user_data/%s/learn" % username,
+            "/storage/user_data/%s/containers/%s" % (username, cid)
+        ]
+        for mount in mounts:
+            for line in all_mounts:
+                if mount in line:
+                    map_device = line.split(" ")[0]
+                    # 卸载容器存储
+                    os.system("umount %s" % mount)
+                    shutil.rmtree(mount)
 
-        # 卸载容器存储
-        os.system("umount %s" % mount)
-        shutil.rmtree(mount)
-
-        # unmap rbd 镜像
-        os.system("rbd unmap %s" % map_device)
+                    # unmap rbd 镜像
+                    os.system("rbd unmap %s" % map_device)
+                    break
 
         # 重置用户容器数据
         if reset:
