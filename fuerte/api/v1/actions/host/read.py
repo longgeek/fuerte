@@ -44,7 +44,7 @@ def read_files(files, cid=None):
             s = r.status_code
             if s != 200:
                 return (s, r.text, "")
-            return (s, "", r.json())
+            return (s, r.json()["message"], r.json()["data"])
     else:
         return read_files_extend(files)
 

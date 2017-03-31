@@ -37,7 +37,7 @@ def execute(cid, cmds):
         s = r.status_code
         if s != 200:
             return (s, r.text, "")
-        return (s, "", r.json())
+        return (s, r.json()["message"], r.json()["data"])
 
 
 def execute_extend(cid, cmds):
@@ -55,4 +55,4 @@ def execute_extend(cid, cmds):
             break
     if not has_error:
         return (0, "", "")
-    return (1, has_error, "")
+    return (-1, has_error, "")

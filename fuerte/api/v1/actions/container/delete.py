@@ -46,7 +46,7 @@ def delete(username, cid, reset=False):
         s = r.status_code
         if s != 200:
             return (s, r.text, "")
-        return (s, "", r.json())
+        return (s, r.json()["message"], r.json()["data"])
 
 
 def delete_extend(username, cid, reset):
