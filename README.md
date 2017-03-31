@@ -25,6 +25,7 @@ If you'd like to run from the master branch, you can clone the git repo:
 
     mkdir /opt/git
     cd /opt/git
+    git clone git@git.pyindex.com:reviewdev/groceries.git
     git clone git@git.pyindex.com:reviewdev/fuerte.git
     cd fuerte/
     pip install -r requirements.txt

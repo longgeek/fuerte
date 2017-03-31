@@ -29,7 +29,7 @@ BASE_CMD = "/storage/.system/.console/bin/butterfly.server.py \
      --host=0.0.0.0 \
      --port=%s \
      --login=%s \
-     --cmd=%s"
+     --cmd='%s'"
 
 # API Actions
 API_ACTIONS = {

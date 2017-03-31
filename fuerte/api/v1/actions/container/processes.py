@@ -8,6 +8,7 @@ import console
 from fuerte.api.v1.utils import pack_requests
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
+from fuerte.api.v1.config import CONSOLE_PORT_BEG
 
 
 def processes(username, cid, cmd=None):
@@ -52,10 +53,12 @@ def processes(username, cid, cmd=None):
         # 判断命令的进程是否存在
         # 存在则返回改命令的 MD5 Url 地址
         if exist_process:
-            return (0, "", console.console_md5(username, cid, cmd))
+            return (0, "", console._console_md5(username, cid, cmd))
         # 不存在返回一个可用的端口号
         else:
             exist_ports.sort()
+            if not exist_ports:
+                return (1, "", CONSOLE_PORT_BEG)
             return (1, "", exist_ports[-1] + 1)
     else:
         return (s, "", r.json())

@@ -102,12 +102,12 @@ def create(username, image, cid=None):
     # 在容器启动后，限制容器下载速率
     _limit_network_bandwidth(user_path, cid)
 
-    # 打入 ssh web 进程，开启 8000 域名访问
+    # 打入 ssh bash web 进程，开启 8000 域名访问
     s_exec, m_exec, r_exec = console.console(username, req.json()["Id"])
     if s_exec != 0:
         return (s_exec, m_exec, r_exec)
-    else:
-        return (0, "Container created successfully", {"cid": req.json()["Id"]})
+    return (0, "Container created successfully", {"console": r_exec,
+                                                  "cid": req.json()["Id"]})
 
 
 def _limit_disk_quota(r_inspect, username, user_path, cid):
