@@ -68,4 +68,4 @@ def write_files_extend(files, pid=None):
         else:
             fo.writelines(files[f].encode("utf-8"))
         fo.close()
-    return (0, "", "")
+    return (0, "", files)
