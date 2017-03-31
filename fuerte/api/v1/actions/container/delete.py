@@ -86,6 +86,6 @@ def delete_extend(username, cid, reset):
         # 重置用户容器数据
         if reset:
             os.system("rbd remove %s_containers_%s" % (username, cid))
-        return (s, "", "")
+        return (s, "Container %s deleted successfully" % cid, "")
     except Exception, e:
         return (-1, str(e), "")

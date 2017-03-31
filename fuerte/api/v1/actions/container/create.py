@@ -107,7 +107,7 @@ def create(username, image, cid=None):
     if s_exec != 0:
         return (s_exec, m_exec, r_exec)
     else:
-        return (s, "", req.json()["Id"])
+        return (0, "Container created successfully", {"cid": req.json()["Id"]})
 
 
 def _limit_disk_quota(r_inspect, username, user_path, cid):
