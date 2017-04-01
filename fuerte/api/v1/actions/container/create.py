@@ -79,7 +79,11 @@ def create(username, image, cid=None):
         return (s_inspect, m_inspect, r_inspect)
 
     # 在容器未启动之前，限制磁盘空间
-    _limit_disk_quota(r_inspect, username, user_path, req.json()["Id"])
+    s, m, r = _limit_disk_quota(r_inspect,
+                                username,
+                                user_path, req.json()["Id"], cid)
+    if s != 0:
+        return (s, m, r)
 
     # 启动容器
     kwargs = {
@@ -100,7 +104,7 @@ def create(username, image, cid=None):
         return (s_net, m_net, "")
 
     # 在容器启动后，限制容器下载速率
-    _limit_network_bandwidth(user_path, cid)
+    _limit_network_bandwidth(user_path, req.json()["Id"])
 
     # 打入 ssh bash web 进程，开启 8000 域名访问
     s_exec, m_exec, r_exec = console.console(username, req.json()["Id"])
@@ -110,34 +114,41 @@ def create(username, image, cid=None):
                                                   "cid": req.json()["Id"]})
 
 
-def _limit_disk_quota(r_inspect, username, user_path, cid):
+def _limit_disk_quota(r_inspect, username, user_path, cid, old_cid):
     """ 限制 Docker 容器磁盘使用空间 """
 
-    # 判断容器是否在当前主机上
-    node = r_inspect["Node"]['IP']
-    if node == NODE_IP:
-        s, m, r = create_container_extend_disk(r_inspect,
-                                               username, user_path, cid)
-        if s != 0:
-            return (s, m, "")
-    else:
-        params = {
-            "action": "Extend:CreateContainerExtendDisk",
-            "params": {
-                "cid": cid,
-                "inspect": r_inspect,
-                "user_path": user_path,
-                "username": username,
+    try:
+        # 判断容器是否在当前主机上
+        node = r_inspect["Node"]['IP']
+        if node == NODE_IP:
+            s, m, r = create_container_extend_disk(r_inspect,
+                                                   username,
+                                                   user_path, cid, old_cid)
+            if s != 0:
+                return (s, m, "")
+            return (s, m, r)
+        else:
+            params = {
+                "action": "Extend:CreateContainerExtendDisk",
+                "params": {
+                    "cid": cid,
+                    "old_cid": old_cid,
+                    "inspect": r_inspect,
+                    "user_path": user_path,
+                    "username": username,
+                }
             }
-        }
-        e_req = requests.post(
-            url="http://%s:8000/api/v1" % node,
-            headers=TOKEN_HEADERS,
-            data=json.dumps(params)
-        )
-        e_status = e_req.status_code
-        if e_status != 200:
-            return (e_status, e_req.text, "")
+            e_req = requests.post(
+                url="http://%s:8000/api/v1" % node,
+                headers=TOKEN_HEADERS,
+                data=json.dumps(params)
+            )
+            e_status = e_req.status_code
+            if e_status != 200:
+                return (e_status, e_req.text, "")
+            return (0, "", "")
+    except Exception, e:
+        return (-1, str(e), "")
 
 
 def _limit_network_bandwidth(user_path, cid):

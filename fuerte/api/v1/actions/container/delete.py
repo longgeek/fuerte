@@ -66,30 +66,38 @@ def delete_extend(username, cid, reset):
 
         # 获取所有挂载点
         fo = open("/proc/mounts", "r")
-        all_mounts = fo.readlines()
+        all_mounts = fo.read()
         fo.close()
 
         # 找到 map 的设备号
-        mounts = [
-            "/storage/user_data/%s/me" % username,
-            "/storage/user_data/%s/learn" % username,
-            "/storage/user_data/%s/containers/%s" % (username, cid)
-        ]
-        for mount in mounts:
-            for line in all_mounts:
-                if mount in line:
-                    map_device = line.split(" ")[0]
-                    # 卸载容器存储
-                    os.system("umount %s" % mount)
-                    shutil.rmtree(mount)
-
-                    # unmap rbd 镜像
-                    os.system("rbd unmap %s" % map_device)
-                    break
+        user_path = "/storage/user_data/%s" % username
+        mounts = {
+            "me": {
+                "image": "%s_me" % username,
+                "mount": "%s/me" % user_path
+            },
+            "learn": {
+                "image": "%s_learn" % username,
+                "mount": "%s/learn" % user_path
+            },
+            "containers": {
+                "image": "%s_containers_%s" % (username, cid),
+                "mount": "%s/containers/%s" % (user_path, cid)
+            },
+        }
+        os.system("chattr -i -a %s" % mounts["learn"]["mount"])
+        for k, v in mounts.items():
+            if v["mount"] in all_mounts:
+                # 卸载容器存储
+                os.system("umount %s" % v["mount"])
+            if k == "containers":
+                shutil.rmtree(v["mount"])
+            # unmap rbd 镜像
+            os.system("rbd unmap %s" % v["image"])
 
         # 重置用户容器数据
         if reset:
-            os.system("rbd remove %s_containers_%s" % (username, cid))
+            os.system("rbd remove %s" % mounts["containers"]["image"])
         return (s, "Container %s deleted successfully" % cid, "")
     except Exception, e:
         return (-1, str(e), "")

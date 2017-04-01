@@ -10,7 +10,7 @@ import subprocess
 from fuerte.api.v1.config import CEPH_CONF
 
 
-def ceph_rbd_create(username, user_path, cid, pool="rbd"):
+def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
     """ Create ceph rbd for the user
 
     Docs in http://docs.ceph.org.cn/rbd/librbdpy/
@@ -46,6 +46,20 @@ def ceph_rbd_create(username, user_path, cid, pool="rbd"):
                 image = data[k]["image"]
                 mount = data[k]["mount"]
                 if image not in rbd_all_images:
+                    if old_cid and k == "containers":
+                        old_image = "%s_containers_%s" % (username, old_cid)
+                        if old_image in rbd_all_images:
+                            os.system("rbd rename %s %s" % (old_image, image))
+                            p = subprocess.Popen(["rbd map %s/%s" % (pool,
+                                                                     image)],
+                                                 stdout=subprocess.PIPE,
+                                                 shell=True)
+                            map_device = p.stdout.read().strip()
+                            os.system("mount -t xfs \
+                                       -o rw,relatime,attr2,inode64,prjquota \
+                                       %s %s" % (map_device, mount))
+                            continue
+
                     # rbd_inst.create(ioctx, image, size)
                     os.system("rbd create %s/%s -s %s --image-feature \
                                layering" % (pool, image, size))

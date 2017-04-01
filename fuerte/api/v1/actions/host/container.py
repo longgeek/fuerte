@@ -9,13 +9,17 @@ import subprocess
 from fuerte.api.v1.actions.host._ceph_rbd_create import ceph_rbd_create
 
 
-def create_container_extend_disk(inspect, username, user_path, cid):
+def create_container_extend_disk(inspect, username, user_path, cid, old_cid):
     """ 创建容器时，在容器所在 docker 主机上执行额外的操作 """
 
     # 创建用户的基本目录
     if not os.path.exists(user_path):
+        os.makedirs(user_path)
+    if not os.path.exists("%s/me" % user_path):
         os.makedirs("%s/me" % user_path)
+    if not os.path.exists("%s/learn" % user_path):
         os.makedirs("%s/learn" % user_path)
+    if not os.path.exists("%s/containers" % user_path):
         os.makedirs("%s/containers" % user_path)
 
     # 如果用户的容器目录不存在，则创建
@@ -32,7 +36,7 @@ def create_container_extend_disk(inspect, username, user_path, cid):
         shutil.rmtree(work)
         shutil.rmtree(upper)
 
-        ceph_rbd_create(username, user_path, cid)
+        ceph_rbd_create(username, user_path, cid, old_cid)
         if not os.path.exists("%s/containers/%s/diff" % (user_path, cid)):
             os.makedirs("%s/containers/%s/diff" % (user_path, cid))
         if not os.path.exists("%s/containers/%s/work" % (user_path, cid)):

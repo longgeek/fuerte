@@ -71,6 +71,7 @@ If you'd like to run from the master branch, you can clone the git repo:
    such as: switch directory
 
     mkdir /storage/.system/.bash/
+    cd /storage/.system/.bash/
     touch switchdir.sh
     #!/bin/bash
 
