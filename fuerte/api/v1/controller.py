@@ -64,6 +64,7 @@ class APIView(Resource):
             return {"Error": "The parameters invalid! <%s>" % e.message}, 500
 
         if s == 0 or s == 200 or s == 204:
+            app.logger.info("return 200\nmessages = %s\ndata = %s" % (m, r))
             api_return = {"message": m, "data": r}, 200
         else:
             api_return = {"error": m, "inner_code": s}, 500

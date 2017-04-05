@@ -11,7 +11,7 @@ from fuerte.api.v1.config import TOKEN_HEADERS
 from fuerte.api.v1.actions.container import inspect
 
 
-def write_files(files, cid=None):
+def write_files(files, username, cid=None):
     """为 Docker 主机或容器里写入文件内
 
     :param dict files:
@@ -33,10 +33,11 @@ def write_files(files, cid=None):
         node = r_inspect["Node"]['IP']
 
         if node == NODE_IP:
-            return write_files_extend(files, pid)
+            return write_files_extend(files, username, pid)
         else:
             params = {"action": "Extend:WriteFilesExtend",
-                      "params": {"pid": pid, "files": files}}
+                      "params": {"pid": pid, "files": files,
+                                 "username": username}}
             r = requests.post(url="http://%s:8000/api/v1" % node,
                               headers=TOKEN_HEADERS,
                               data=json.dumps(params))
@@ -48,7 +49,7 @@ def write_files(files, cid=None):
         return write_files_extend(files)
 
 
-def write_files_extend(files, pid=None):
+def write_files_extend(files, username, pid=None):
     """ 写入文件内容代码体 """
 
     for f in files:
@@ -62,10 +63,14 @@ def write_files_extend(files, pid=None):
             os.makedirs(fp)
 
         # 写入数据到文件中
+        if "/storage/learn/" in f:
+            os.system("chattr -R -i -a /storage/user_data/%s/learn" % username)
         fo = open(pid_f, "w")
         if not files[f]:
             fo.write("")
         else:
             fo.writelines(files[f].encode("utf-8"))
         fo.close()
+        if "/storage/learn/" in f:
+            os.system("chattr -R -i +a /storage/user_data/%s/learn" % username)
     return (0, "", files)
