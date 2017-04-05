@@ -51,16 +51,16 @@ def fd_check_extend(cid, fds, pid):
     try:
         result = {}
         for fd in fds:
-            fd_path = "/proc/%s/root" % pid + fd["name"]
+            # fd_path = "/proc/%s/root" % pid + fd["name"]
             if fd["type"] == "file":
-                if os.path.exists(fd_path) and \
-                   os.path.isfile(fd_path):
+                if os.path.exists(fd["name"]) and \
+                   os.path.isfile(fd["name"]):
                     result[fd["name"]] = True
                 else:
                     result[fd["name"]] = False
             else:
-                if os.path.exists(fd_path) and \
-                   os.path.isdir(fd_path):
+                if os.path.exists(fd["name"]) and \
+                   os.path.isdir(fd["name"]):
                     result[fd["name"]] = True
                 else:
                     result[fd["name"]] = False
