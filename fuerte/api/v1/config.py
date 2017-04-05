@@ -44,12 +44,12 @@ API_ACTIONS = {
             "action": ("container", "console", "console"),
         },
         "Exec": {
-            "action": ("container", "exec", "execute"),
+            "action": ("container", "execute", "execute"),
         },
     },
     "Host": {
         "Exec": {
-            "action": ("host", "exec", "execute"),
+            "action": ("host", "execute", "execute"),
         },
         "FdCheck": {
             "action": ("host", "check", "fd_check"),

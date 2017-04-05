@@ -36,7 +36,16 @@ def console(username, cid, cmds=None):
             s, m, r = processes.processes(username, cid, cmd)
             if s == 1:
                 port = r
-                params["Cmd"] = ["/bin/sh", "-c", BASE_CMD % (r, "False", cmd)]
+                if cmd.startswith("webfront"):
+                    params["Cmd"] = [
+                        "bash",
+                        "-c",
+                        "pushd %s && python -m SimpleHTTPServer %s" %
+                        (cmd.split(" ")[-1], port)
+                    ]
+                else:
+                    params["Cmd"] = ["/bin/sh", "-c",
+                                     BASE_CMD % (r, "False", cmd)]
                 s, m, r = _console_exec(username, cid, params)
                 if s != 0:
                     return (s, m, r)

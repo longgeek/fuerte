@@ -5,6 +5,7 @@
 import re
 import console
 
+from fuerte.api.v1.actions.host import execute
 from fuerte.api.v1.utils import pack_requests
 from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
@@ -35,6 +36,18 @@ def processes(username, cid, cmd=None):
     if cmd:
         # 遍历所有进程，匹配是否有 cmd 的进程
         for p in r.json()["Processes"]:
+            # 判断 webfront 的 http 服务器进程是否存在
+            if "SimpleHTTPServer" in p[-1] and "bash -c pushd" in p[-1]:
+                if cmd.startswith("webfront"):
+                    # 判断 http 服务器的根目录是否一致
+                    if p[-1].split(" ")[3] != cmd.split(" ")[-1]:
+                        execute.execute(cid, username, ["kill -9 %s" % p[1]])
+                    else:
+                        exist_process = True
+                        exist_ports.append(int(p[-1].split(" ")[-1]))
+                        break
+                else:
+                    exist_ports.append(int(p[-1].split(" ")[-1]))
             if "butterfly.server.py" in p[-1] and "/bin/sh -c" not in p[-1]:
                 # 拿到当前进程的具体命令
                 process_cmd = p[-1].split("--cmd=")[-1]
