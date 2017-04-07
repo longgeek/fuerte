@@ -19,7 +19,9 @@ If you'd like to run from the master branch, you can clone the git repo:
 2. INSTALL PACKAGES:
 
     apt-get install python-dev python-rados python-tox libffi-dev libssl-dev libxml2-dev libxslt1-dev
-    apt-get install redis-server
+    # Note:
+    # apt-get install redis-server 不安装 redis，将直接使用 redis 容器(scripts/redis.sh)
+    #
 
 3. INSTALL FUERTE:
 

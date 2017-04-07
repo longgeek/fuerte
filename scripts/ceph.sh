@@ -1,6 +1,8 @@
 #!/bin/bash
 #http://www.aboutyun.com/thread-10662-1-1.html
 
+echo "deb https://download.ceph.com/debian-jewel/ trusty main" > /etc/apt/sources.list.d/ceph.list
+apt-get update
 apt-get install -y --force-yes ceph ceph-deploy ceph-fs-common ceph-fuse ceph-mds
 cd /etc/ceph
 ceph-deploy new dc-manager01 dc-manager02 dc-manager03
