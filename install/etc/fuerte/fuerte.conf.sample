@@ -3,7 +3,7 @@
 #
 # Docker swarm manage address
 #
-url = https://192.168.0.2:4000
+url = https://127.0.0.1:4000
 
 #
 # Fuerte listen interface
@@ -58,7 +58,7 @@ log_dir=/var/log/fuerte
 
 # The Redis broker address where a single node is used
 # (string value)
-redis_host = 127.0.0.1
+redis_host = dc-manager01
 
 # The Redis broker port where a single node is used
 # (integer value)
