@@ -1,6 +1,7 @@
 #!/bin/bash
 
-[ -e mkfs.xfs ] || echo "mkfs.xfs not install" && exit
+[ -e /sbin/mkfs.xfs ] || echo "mkfs.xfs not install"
+[ -e /sbin/mkfs.xfs ] || exit
 
 apt-get install -y lvm2
 pvcreate /dev/vdd1
