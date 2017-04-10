@@ -1,9 +1,11 @@
 #!/bin/bash
 
+[ -e mkfs.xfs ] || echo "mkfs.xfs not install" && exit
+
 apt-get install -y lvm2
 pvcreate /dev/vdc1
 vgcreate vg-docker-storage /dev/vdc1
-lvcreate -L 10G -n lv-docker-storage vg-docker-storage
+lvcreate -L 9.9G -n lv-docker-storage vg-docker-storage
 service docker stop
 rm -fr /var/lib/docker/*
 mkfs -t xfs -m crc=0 -n ftype=1 -f /dev/vg-docker-storage/lv-docker-storage
