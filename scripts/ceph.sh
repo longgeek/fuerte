@@ -10,9 +10,7 @@ ceph-deploy install dc-manager01 dc-manager02 dc-manager03
 ceph-deploy mon create dc-manager01 dc-manager02 dc-manager03
 ceph-deploy gatherkeys dc-manager01 dc-manager02 dc-manager03
 ceph-deploy mds create dc-manager01 dc-manager02 dc-manager03
-mkdir -p /ceph/osd
-chown ceph:ceph /ceph/osd
-echo "/dev/vg-ceph-storage/lv-ceph-storage  /ceph/osd xfs  rw,relatime,attr2,inode64,prjquota  0  0" >> /etc/fstab
+chown -R ceph:ceph /ceph
 ceph-deploy osd prepare dc-manager01:/ceph/osd dc-manager02:/ceph/osd dc-manager03:/ceph/osd
 ceph-deploy osd activate dc-manager01:/ceph/osd dc-manager02:/ceph/osd dc-manager03:/ceph/osd
 ceph-deploy admin dc-manager01
