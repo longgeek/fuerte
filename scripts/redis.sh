@@ -37,6 +37,7 @@ if [ $CONTAINER_NUM = 0 ]; then
             -itd \
             --restart always \
             --name fuvism-redis \
+            --net fuvism-manager \
             -p 6379:6379 \
             -v /storage/services/redis:/data \
             redis:3.2.8 \

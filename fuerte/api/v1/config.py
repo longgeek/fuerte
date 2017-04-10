@@ -63,7 +63,7 @@ API_ACTIONS = {
     },
     "Extend": {
         "HostExecuteExtend": {
-            "action": ("host", "exec", "execute_extend"),
+            "action": ("host", "execute", "execute_extend"),
         },
         "HostFdCheckExtend": {
             "action": ("host", "check", "fd_check_extend"),

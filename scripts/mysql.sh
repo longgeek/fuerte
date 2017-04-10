@@ -28,7 +28,7 @@ else
     echo -e "    存储已创建，并挂载.\n"
 fi
 
-echo -e "\n2. 创建 Redis 容器"
+echo -e "\n2. 创建 Mysql 容器"
 
 CONTAINER_NUM=$(docker ps -a | grep fuvism-mysql | wc -l)
 if [ $CONTAINER_NUM = 0 ]; then
@@ -37,6 +37,7 @@ if [ $CONTAINER_NUM = 0 ]; then
             -itd \
             --restart always \
             --name fuvism-mysql \
+            --net fuvism-manager \
             -v /storage/services/mysql:/var/lib/mysql \
             -e MYSQL_ROOT_PASSWORD=4jT3R4fEjQRz8n8s \
             mysql:5.6 \
