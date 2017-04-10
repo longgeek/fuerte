@@ -65,7 +65,7 @@ If you'd like to run from the master branch, you can clone the git repo:
     git clone git@github.com:thstack/butterfly.git
     cd butterfly
     pip install -r requirements.txt
-    python setup.py develop(必须是 develop, install 后静态文件会 404)
+    python setup.py develop  # 必须是 develop, install 后静态文件会 404
     deactivate
 
 7. Django database synchronization needs to enter the project directory,
@@ -106,6 +106,7 @@ If you'd like to run from the master branch, you can clone the git repo:
 9. Sure tree command the >= 1.7.0.
    Install:
 
+    cd /opt/
     wget https://launchpadlibrarian.net/173977087/tree_1.7.0.orig.tar.gz
     tar zxvf tree_1.7.0.orig.tar.gz
     cd tree-1.7.0
