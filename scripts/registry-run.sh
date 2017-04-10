@@ -8,6 +8,8 @@
 #     -v /storage/registry:/var/lib/registry \
 #     registry:2
 
+[ -e /storage/services/registry/data ] || echo "/storage/services/registry/data not exists!"
+[ -e /storage/services/registry/data ] || exit
 # use tls
 docker run -itd \
     -p 5000:5000 \

@@ -5,12 +5,12 @@ echo "deb http://mirrors.aliyun.com/ceph/debian-jewel/ trusty main" > /etc/apt/s
 apt-get update
 apt-get install -y --force-yes ceph ceph-deploy ceph-fs-common ceph-fuse ceph-mds
 cd /etc/ceph
+ansible dc -a "chown -R ceph:ceph /ceph"
 ceph-deploy new dc-manager01 dc-manager02 dc-manager03
 ceph-deploy install dc-manager01 dc-manager02 dc-manager03
 ceph-deploy mon create dc-manager01 dc-manager02 dc-manager03
 ceph-deploy gatherkeys dc-manager01 dc-manager02 dc-manager03
 ceph-deploy mds create dc-manager01 dc-manager02 dc-manager03
-chown -R ceph:ceph /ceph
 ceph-deploy osd prepare dc-manager01:/ceph/osd dc-manager02:/ceph/osd dc-manager03:/ceph/osd
 ceph-deploy osd activate dc-manager01:/ceph/osd dc-manager02:/ceph/osd dc-manager03:/ceph/osd
 ceph-deploy admin dc-manager01
