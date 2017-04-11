@@ -81,7 +81,7 @@ def delete_extend(username, cid, reset):
                 "mount": "%s/learn" % user_path
             },
             "containers": {
-                "image": "%s_containers_%s" % (username, cid),
+                "image": "%s_c_%s" % (username, cid),
                 "mount": "%s/containers/%s" % (user_path, cid)
             },
         }

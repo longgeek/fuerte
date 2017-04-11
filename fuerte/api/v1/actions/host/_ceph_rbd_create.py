@@ -28,7 +28,7 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
         },
         "containers": {
             "size": "5G",
-            "image": "%s_containers_%s" % (username, cid),
+            "image": "%s_c_%s" % (username, cid),
             "mount": "%s/containers/%s" % (user_path, cid)
         }
     }
@@ -47,7 +47,7 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
                 mount = data[k]["mount"]
                 if image not in rbd_all_images:
                     if old_cid and k == "containers":
-                        old_image = "%s_containers_%s" % (username, old_cid)
+                        old_image = "%s_c_%s" % (username, old_cid)
                         if old_image in rbd_all_images:
                             os.system("rbd rename %s %s" % (old_image, image))
                             p = subprocess.Popen(["rbd map %s/%s" % (pool,
