@@ -9,6 +9,7 @@ docker run \
     --link fuvism-boss \
     --link fuvism-zion \
     --link fuvism-op \
+    --link fuvism-prerender \
     --restart always \
     -v /opt/git:/opt/git \
     -v /opt/git/fuerte/install/openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf \

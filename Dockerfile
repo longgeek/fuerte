@@ -24,7 +24,6 @@ alias ll='ls -la'\n\
 alias l='ls -l'\n\
 alias grep='grep --color'\n\
 export CLICOLOR=1\n\
-export PS1='\[\033[01;33m\]\u@\h\[\033[01;31m\] \W\#\[\033[00m\] '\n\
 export LS_COLORS='ex=35:ln=36:mi=31:or=31'\n\
 " >> /root/.bashrc
 
