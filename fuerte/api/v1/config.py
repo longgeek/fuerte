@@ -37,6 +37,9 @@ API_ACTIONS = {
         "Create": {
             "action": ("container", "create", "create"),
         },
+        "IsStart": {
+            "action": ("container", "is_start", "is_start"),
+        },
         "Delete": {
             "action": ("container", "delete", "delete"),
         },
