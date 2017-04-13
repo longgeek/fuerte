@@ -79,7 +79,7 @@ for line in data:
                   % map_device)
         # 挂载 rbd
         os.system("mount -t xfs \
-                   -o discard \
+                   -o rw,noexec,nodev,noatime,nodiratime,nobarrier,discard \
                    %s %s" % (map_device, mount))
         # 拷贝数据
         if k == "me":

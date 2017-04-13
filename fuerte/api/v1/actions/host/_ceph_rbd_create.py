@@ -15,6 +15,7 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
 
     Docs in http://docs.ceph.org.cn/rbd/librbdpy/
     """
+    mount_opts = "rw,noexec,nodev,noatime,nodiratime,nobarrier,discard"
     data = {
         "me": {
             "size": "1G",
@@ -55,9 +56,9 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
                                                  stdout=subprocess.PIPE,
                                                  shell=True)
                             map_device = p.stdout.read().strip()
-                            os.system("mount -t xfs \
-                                       -o discard \
-                                       %s %s" % (map_device, mount))
+                            os.system("mount -t xfs -o %s %s %s" % (mount_opts,
+                                                                    map_device,
+                                                                    mount))
                             continue
 
                     # rbd_inst.create(ioctx, image, size)
@@ -70,9 +71,8 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
                     p.stdout.close()
                     os.system("mkfs -t xfs -m crc=0 -n ftype=1 -f %s"
                               % map_device)
-                    os.system("mount -t xfs \
-                               -o discard \
-                               %s %s" % (map_device, mount))
+                    os.system("mount -t xfs -o %s %s %s" % (mount_opts,
+                                                            map_device, mount))
                 else:
                     # 获取所有的 rbd image map
                     m = subprocess.Popen(["rbd showmapped"],
@@ -101,6 +101,6 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
 
                     # 如果 map 的设备没有挂载，则挂载
                     if map_device not in all_mounts:
-                        os.system("mount -t xfs \
-                                   -o discard \
-                                   %s %s" % (map_device, mount))
+                        os.system("mount -t xfs -o %s %s %s" % (mount_opts,
+                                                                map_device,
+                                                                mount))
