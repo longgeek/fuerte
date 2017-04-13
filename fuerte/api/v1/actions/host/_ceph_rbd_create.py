@@ -56,7 +56,7 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
                                                  shell=True)
                             map_device = p.stdout.read().strip()
                             os.system("mount -t xfs \
-                                       -o rw,relatime,attr2,inode64,prjquota \
+                                       -o discard \
                                        %s %s" % (map_device, mount))
                             continue
 
@@ -71,7 +71,7 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
                     os.system("mkfs -t xfs -m crc=0 -n ftype=1 -f %s"
                               % map_device)
                     os.system("mount -t xfs \
-                               -o rw,relatime,attr2,inode64,prjquota \
+                               -o discard \
                                %s %s" % (map_device, mount))
                 else:
                     # 获取所有的 rbd image map
@@ -102,5 +102,5 @@ def ceph_rbd_create(username, user_path, cid, old_cid, pool="rbd"):
                     # 如果 map 的设备没有挂载，则挂载
                     if map_device not in all_mounts:
                         os.system("mount -t xfs \
-                                   -o rw,relatime,attr2,inode64,prjquota \
+                                   -o discard \
                                    %s %s" % (map_device, mount))
