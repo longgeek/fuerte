@@ -131,15 +131,20 @@ def _console_save(username, cid, cmd=None, port=None):
     else:
         # 第一次创建容器后，默认在 redis 中保存 ssh、8000 地址
         r = {}
-        for c in ["ssh", "bash", "8000"]:
+        for c in ["ssh", "bash", "80", "8000", "9000"]:
             console_url = "http://%s.%s.%s" % (c, username, CONSOLE_DOMAIN)
             console_addr = "http://%s:%s" % (cip, CONSOLE_PORT_BEG)
             if c == "bash":
                 console_url = _console_md5(username, cid, "bash")
                 console_addr = "http://%s:%s" % (cip,
                                                  int(CONSOLE_PORT_BEG) + 1)
-            if c == "8000":
-                console_addr = "http://%s:%s" % (cip, "8000")
+            elif c == "80":
+                console_url = "http://%s.%s" % (username, CONSOLE_DOMAIN)
+                console_addr = "http://%s:80" % cip
+            elif c == "8000":
+                console_addr = "http://%s:8000" % cip
+            elif c == "9000":
+                console_addr = "http://%s:9000" % cip
             r[c] = console_url
             redis_store.set(console_url, console_addr)
         return (0, "", r)
