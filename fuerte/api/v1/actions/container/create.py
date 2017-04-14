@@ -43,11 +43,12 @@ def create(username, image, cid=None):
         "HostConfig": {
             "Memory": 102400000,  # 100M
             "MemorySwap": 512000000,  # 512M
-            "MemoryReservation": 80000000,  # 80M
+            # "MemoryReservation": 80000000,  # 80M
             "NetworkMode": NETWORK_BASES_NAME,
             # 限制 CPU 最高使用率为 20%
             "CpuPeriod": 50000,
             "CpuQuota": 10000,
+            # "OomKillDisable": True,
             "Ulimits": [
                 {"Name": "nproc", "Hard": 512, "Soft": 400},
                 {"Name": "nofile", "Hard": 1024, "Soft": 800},
