@@ -40,8 +40,9 @@ def console(username, cid, cmds=None):
                     params["Cmd"] = [
                         "bash",
                         "-c",
-                        "pushd %s && python -m SimpleHTTPServer %s" %
-                        (cmd.split(" ")[-1], port)
+                        "mkdir -p %s && pushd %s && \
+                        python -m SimpleHTTPServer %s" %
+                        (cmd.split(" ")[-1], cmd.split(" ")[-1], port)
                     ]
                 else:
                     params["Cmd"] = ["/bin/sh", "-c",

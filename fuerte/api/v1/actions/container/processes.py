@@ -37,7 +37,7 @@ def processes(username, cid, cmd=None):
         # 遍历所有进程，匹配是否有 cmd 的进程
         for p in r.json()["Processes"]:
             # 判断 webfront 的 http 服务器进程是否存在
-            if "SimpleHTTPServer" in p[-1] and "bash -c pushd" in p[-1]:
+            if "SimpleHTTPServer" in p[-1] and "bash -c mkdir -p" in p[-1]:
                 if cmd.startswith("webfront"):
                     # 判断 http 服务器的根目录是否一致
                     if p[-1].split(" ")[3] != cmd.split(" ")[-1]:
