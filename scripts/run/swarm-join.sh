@@ -3,7 +3,7 @@
 IP=$(ifconfig eth0 | grep 'inet addr:' | awk '{print $2}' | awk -F: '{print $2}')
 # consul 没有使用 TLS 证书的情况下
 # docker run -itd \
-# --name swarm-node \
+# --name fuvism-swarm-node \
 # --restart always \
 # swarm join \
 # --advertise 192.168.0.2:2375 \
@@ -12,7 +12,7 @@ IP=$(ifconfig eth0 | grep 'inet addr:' | awk '{print $2}' | awk -F: '{print $2}'
 
 # consul 使用了 TLS 证书
 docker run -itd \
---name swarm-node \
+--name fuvism-swarm-node \
 --restart always \
 -v /storage/services/ca:/certs.d/ca:ro \
 -v /storage/services/client:/certs.d/client:ro \

@@ -16,6 +16,6 @@ docker run \
     -v /opt/git/fuerte/install/openresty/nginx-bp:/usr/local/openresty/nginx/conf/nginx-bp \
     -v /opt/git/fuerte/install/openresty/sites-enabled:/usr/local/openresty/nginx/conf/sites-enabled \
     -v /opt/git/fuerte/install/openresty/assets:/usr/local/openresty/nginx/html/assets \
-    openresty/openresty:trusty
+    fuvism/openresty:latest
 
 docker network connect fuvism-manager fuvism-nginx
