@@ -6,8 +6,8 @@ IP=$(ifconfig eth0 | grep 'inet addr:' | awk '{print $2}' | awk -F: '{print $2}'
 # --name fuvism-swarm-node \
 # --restart always \
 # swarm join \
-# --advertise 192.168.0.2:2375 \
-# consul://192.168.0.2:8500
+# --advertise 192.168.0.1:2375 \
+# consul://192.168.0.1:8500
 
 
 # consul 使用了 TLS 证书
@@ -21,4 +21,4 @@ swarm join \
 --discovery-opt kv.cacertfile=/certs.d/ca/ca.pem \
 --discovery-opt kv.certfile=/certs.d/client/client.pem \
 --discovery-opt kv.keyfile=/certs.d/client/client-key.pem \
-consul://192.168.0.2:8501
+consul://192.168.0.1:8501

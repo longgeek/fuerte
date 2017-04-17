@@ -43,7 +43,7 @@ if [ $CONTAINER_NUM = 0 ]; then
             -v /storage/services/registry/data:/var/lib/registry \
             -e REGISTRY_HTTP_TLS_CERTIFICATE=/etc/registry/registry.pem \
             -e REGISTRY_HTTP_TLS_KEY=/etc/registry/registry-key.pem \
-            -e REGISTRY_HTTP_HOST=https://192.168.0.2:5000 \
+            -e REGISTRY_HTTP_HOST=https://192.168.0.1:5000 \
             -e REGISTRY_AUTH=htpasswd \
             -e REGISTRY_AUTH_HTPASSWD_REALM=Registry-Realm \
             -e REGISTRY_AUTH_HTPASSWD_PATH=/etc/registry/registry.htpasswd \

@@ -42,7 +42,7 @@ if [ $CONTAINER_NUM = 0 ]; then
             -v /storage/services/ca/ca.pem:/config/ca.pem \
             -p 8501:8501 \
             progrium/consul \
-            -advertise=192.168.0.2 \
+            -advertise=192.168.0.1 \
             -config-dir=/config \
             -config-file=/config/server.json
     )

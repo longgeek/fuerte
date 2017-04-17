@@ -2,7 +2,7 @@
 # https://github.com/frntn/docker-tls-helper
 set -ex
 
-SRV_SAN="DNS:dc-manager01,DNS:dc-manager02,DNS:dc-manager03,DNS:localhost,IP:192.168.0.2,IP:192.168.0.3,IP:192.168.0.4,IP:127.0.0.1" 
+SRV_SAN="DNS:dc-manager01,DNS:dc-manager02,DNS:dc-manager03,DNS:dc-manager04,DNS:dc-manager-05,DNS:dc-manager-06,DNS:dc-manager-07,DNS:dc-manager08,DNS:dc-manager09,DNS:dc-manager10,DNS:localhost,IP:192.168.0.1,IP:192.168.0.2,IP:192.168.0.3,IP:192.168.0.4,IP:192.168.0.5,IP:192.168.0.6,IP:192.168.0.7,IP:192.168.0.8,IP:192.168.0.9,IP:192.168.0.10,IP:127.0.0.1" 
 SRV_SUBJ="/CN=*"  # manage01
 CLT_SUBJ="/CN=*"
 

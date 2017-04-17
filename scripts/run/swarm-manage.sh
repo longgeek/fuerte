@@ -12,13 +12,13 @@ IP=$(ifconfig eth0 | grep 'inet addr:' | awk '{print $2}' | awk -F: '{print $2}'
 # swarm manage \
 # -H :4000 \
 # --replication \
-# --advertise 192.168.0.2:4000 \
+# --advertise 192.168.0.1:4000 \
 # --strategy binpack \
 # --tlsverify \
 # --tlscacert=/certs.d/ca/ca.pem \
 # --tlscert=/certs.d/swarm/swarm.pem \
 # --tlskey=/certs.d/swarm/swarm-key.pem \
-# consul://192.168.0.2:8500
+# consul://192.168.0.1:8500
 
 
 # consul 使用了 TLS 证书
@@ -41,4 +41,4 @@ swarm manage \
 --discovery-opt kv.cacertfile=/certs.d/ca/ca.pem \
 --discovery-opt kv.certfile=/certs.d/client/client.pem \
 --discovery-opt kv.keyfile=/certs.d/client/client-key.pem \
-consul://192.168.0.2:8501
+consul://192.168.0.1:8501
