@@ -22,6 +22,7 @@ IP=$(ifconfig eth0 | grep 'inet addr:' | awk '{print $2}' | awk -F: '{print $2}'
 
 
 # consul 使用了 TLS 证书
+# --strategy binpack \
 docker run -itd \
 -p 4000:4000 \
 --name fuvism-swarm-manage \
@@ -33,7 +34,6 @@ swarm manage \
 -H :4000 \
 --replication \
 --advertise $IP:4000 \
---strategy binpack \
 --tlsverify \
 --tlscacert=/certs.d/ca/ca.pem \
 --tlscert=/certs.d/swarm/swarm.pem \
