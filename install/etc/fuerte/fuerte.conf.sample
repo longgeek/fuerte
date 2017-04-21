@@ -20,7 +20,7 @@ console_port_end = 44000
 #
 # Docker swarm overlay network names
 #
-network_bases_name = fuvism-bases
+network_learn_name = fuvism-learn
 network_nginx_name = fuvism-nginx
 
 #

@@ -13,7 +13,7 @@ from fuerte.api.v1.config import URL
 from fuerte.api.v1.config import HEADERS
 from fuerte.api.v1.config import TOKEN_HEADERS
 from fuerte.api.v1.config import NODE_IP
-from fuerte.api.v1.config import NETWORK_BASES_NAME
+from fuerte.api.v1.config import NETWORK_LEARN_NAME
 from fuerte.api.v1.config import NETWORK_NGINX_NAME
 from fuerte.api.v1.actions.host.container import create_container_extend_net
 from fuerte.api.v1.actions.host.container import create_container_extend_disk
@@ -44,7 +44,7 @@ def create(username, image, cid=None):
             "Memory": 102400000,  # 100M
             "MemorySwap": 512000000,  # 512M
             # "MemoryReservation": 80000000,  # 80M
-            "NetworkMode": NETWORK_BASES_NAME,
+            "NetworkMode": NETWORK_LEARN_NAME,
             # 限制 CPU 最高使用率为 20%
             "CpuPeriod": 50000,
             "CpuQuota": 10000,

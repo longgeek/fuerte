@@ -50,7 +50,7 @@ class DefaultConfig(object):
         CONSOLE_PORT_BEG = cfg.get(_option, "console_port_beg")
         CONSOLE_PORT_END = cfg.get(_option, "console_port_end")
 
-        NETWORK_BASES_NAME = cfg.get(_option, "network_bases_name")
+        NETWORK_LEARN_NAME = cfg.get(_option, "network_learn_name")
         NETWORK_NGINX_NAME = cfg.get(_option, "network_nginx_name")
     except Exception, e:
         exit(err + str(e) + "\n")
