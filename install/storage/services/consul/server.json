@@ -1,6 +1,6 @@
 {
     "encrypt": "cg8StVXbQJ0gPvMd9o7yrg==",
-    "data_dir": "/data",
+    "data_dir": "/consul/config/data",
     "ui_dir": "/ui",
     "client_addr": "0.0.0.0",
     "log_level": "INFO",
@@ -16,7 +16,7 @@
     "disable_update_check": true,
     "verify_incoming": true,
     "verify_outgoing": true,
-    "key_file": "/config/consul-key.pem",
-    "cert_file": "/config/consul.pem",
-    "ca_file": "/config/ca.pem"
+    "key_file": "/consul/config/consul-key.pem",
+    "cert_file": "/consul/config/consul.pem",
+    "ca_file": "/consul/config/ca.pem"
 }

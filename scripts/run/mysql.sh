@@ -45,6 +45,7 @@ if [ $CONTAINER_NUM = 0 ]; then
             mysql:5.6 \
             --character-set-server=utf8mb4 \
             --collation-server=utf8mb4_unicode_ci \
+            --explicit_defaults_for_timestamp \
             --wait_timeout=604800
     )
     /bin/echo "    容器 ID: $CID"

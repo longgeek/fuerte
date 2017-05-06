@@ -37,23 +37,17 @@ CONTAINER_NUM=$(docker ps -a | grep fuvism-consul | wc -l)
 if [ $CONTAINER_NUM = 0 ]; then
     CID=$(
         docker run -itd --restart always --name fuvism-consul \
-            -v /storage/services/consul:/config \
-            -v /storage/services/consul/data:/data \
-            -v /storage/services/ca/ca.pem:/config/ca.pem \
+            -v /storage/services/consul:/consul/config \
+            -v /storage/services/ca/ca.pem:/consul/config/ca.pem \
             -p 8501:8501 \
-            progrium/consul \
+            consul:latest \
+            agent \
             -advertise=192.168.0.1 \
-            -config-dir=/config \
-            -config-file=/config/server.json
+            -data-dir=/consul/config/data \
+            -config-dir=/consul/config \
+            -config-file=/consul/config/server.json
     )
     /bin/echo "    容器 ID: $CID"
 else
     /bin/echo "    容器已存在."
 fi
-
-
-
-
-
-
-
