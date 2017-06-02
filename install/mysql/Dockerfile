@@ -1,5 +1,26 @@
-FROM ubuntu:14.04.5
+FROM ubuntu:16.04
 MAINTAINER longgeek@fuvism.com
+
+
+#
+# 设置阿里云源
+# 安装基本软件包
+#
+RUN echo "\n\
+deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse\n\
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse\n\
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse\n\
+deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse\n\
+deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse\n\
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse\n\
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse\n\
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse\n\
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse\n\
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse\n\
+" > /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get -y install vim tzdata locales apt-utils ipython openssh-server python-pip python-dev libffi-dev \
+                       python-openssl python-crypto libssl-dev dstat htop tmux git man-db telnet wget
 
 
 #
@@ -26,27 +47,6 @@ alias grep='grep --color'\n\
 export CLICOLOR=1\n\
 export LS_COLORS='ex=35:ln=36:mi=31:or=31'\n\
 " >> /root/.bashrc
-
-
-#
-# 设置阿里云源
-# 安装基本软件包
-#
-RUN echo "\n\
-deb http://mirrors.aliyun.com/ubuntu/ trusty main restricted universe multiverse\n\
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted universe multiverse\n\
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted universe multiverse\n\
-deb http://mirrors.aliyun.com/ubuntu/ trusty-proposed main restricted universe multiverse\n\
-deb http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse\n\
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty main restricted universe multiverse\n\
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted universe multiverse\n\
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted universe multiverse\n\
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-proposed main restricted universe multiverse\n\
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse\n\
-" > /etc/apt/sources.list && \
-    apt-get update && \
-    apt-get -y install vim ipython openssh-server python-pip python-dev libffi-dev python-openssl \
-                       python-crypto libssl-dev dstat htop tmux git man-db telnet wget
 
 
 #
@@ -103,13 +103,15 @@ RUN set -ex; \
 # gpg: key 5072E1F5: public key "MySQL Release Engineering <mysql-build@oss.oracle.com>" imported
     key='A4A9406876FCBD3C456770C88C718D3B5072E1F5'; \
     export GNUPGHOME="$(mktemp -d)"; \
-    gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key"; \
+    # gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key"; \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
     gpg --export "$key" > /etc/apt/trusted.gpg.d/mysql.gpg; \
     rm -r "$GNUPGHOME"; \
     apt-key list > /dev/null
 
-ENV MYSQL_MAJOR 5.6
-ENV MYSQL_VERSION 5.6.33
+ENV MYSQL_MAJOR 5.7
+ENV MYSQL_VERSION 5.7.18
+ENV DEBIAN_FRONTEND noninteractive
 
 # RUN echo "deb http://repo.mysql.com/apt/debian/ jessie mysql-${MYSQL_MAJOR}" > /etc/apt/sources.list.d/mysql.list
 
@@ -121,7 +123,7 @@ RUN { \
         echo mysql-server mysql-server/re-root-pass password ''; \
         echo mysql-server mysql-server/remove-test-db select false; \
     } | debconf-set-selections \
-    && apt-get update && apt-get install -y mysql-server-5.6 && rm -rf /var/lib/apt/lists/* \
+    && apt-get update && apt-get install -y mysql-server && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
     && chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
 # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
