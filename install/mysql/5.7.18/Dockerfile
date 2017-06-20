@@ -20,7 +20,7 @@ deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted unive
 " > /etc/apt/sources.list && \
     apt-get update && \
     apt-get -y install vim tzdata locales apt-utils ipython openssh-server python-pip python-dev libffi-dev \
-                       python-openssl python-crypto libssl-dev dstat htop tmux git man-db telnet wget
+                       openssl python-openssl python-crypto libssl-dev dstat htop tmux git man-db telnet wget
 
 
 #
